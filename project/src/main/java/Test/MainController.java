@@ -1,9 +1,18 @@
 package Test;
 
 
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import Test.TestFX;
 
 public class MainController {
 	
@@ -14,12 +23,16 @@ public class MainController {
     private Button controlsButton;
     
     @FXML
-    void showControls(MouseEvent event) {
-    	System.out.println("Controls");
+    public void showControls(ActionEvent event) throws IOException { // Switch scene to ControlWindow
+		Parent root = FXMLLoader.load(getClass().getResource("ControlWindow.fxml"));
+		Scene scene = new Scene(root);
+		Stage primaryStage = TestFX.getPrimaryStage();
+		primaryStage.setScene(scene);
+		primaryStage.show();		
     }
 
     @FXML
-    void startGame(MouseEvent event) {
+    void startGame(ActionEvent event) {
     	System.out.println("Play");
     }
 
