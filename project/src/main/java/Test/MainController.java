@@ -30,10 +30,13 @@ public class MainController {
 		primaryStage.setScene(scene);
 		primaryStage.show();		
     }
-
-    @FXML
-    void startGame(ActionEvent event) {
-    	System.out.println("Play");
+    
+    public void showName(ActionEvent event) throws IOException { // Switch scene to ControlWindow
+		Parent root = FXMLLoader.load(getClass().getResource("NameWindow.fxml"));
+		Scene scene = new Scene(root);
+		Stage primaryStage = TestFX.getPrimaryStage();
+		primaryStage.setScene(scene);
+		primaryStage.show();		
     }
 
 }

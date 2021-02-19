@@ -11,7 +11,7 @@
    <children>
       <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="playButton" alignment="CENTER" ellipsisString="P" mnemonicParsing="false" onAction="#startGame" prefWidth="200.0" text="Play" textAlignment="CENTER">
+            <Button fx:id="playButton" alignment="CENTER" ellipsisString="P" mnemonicParsing="false" onAction="#showName" prefWidth="200.0" text="Play" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="20.0" top="20.0" />
                </VBox.margin>
