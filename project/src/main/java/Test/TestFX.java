@@ -27,6 +27,5 @@ public class TestFX extends Application {
 		catch (Exception e){
 			e.printStackTrace();
 		}
-		
 	}
 }
