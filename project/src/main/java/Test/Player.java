@@ -17,7 +17,7 @@ public class Player {
 		}
 	}
 	
-	public void skyt() {
+	public void shoot() {
 		Shot shot = new Shot(this.pos);
 		shot.shoot();
 	}
