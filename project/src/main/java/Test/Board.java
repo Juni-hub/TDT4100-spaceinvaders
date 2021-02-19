@@ -1,10 +1,27 @@
 package Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Board {
-	int score = 0;
-	int highScore = 0;
+	private int score = 0;
+	private int highScore = 0;
+	private List<Alien> AlienGroup= new ArrayList<Alien>();
+	Timer timer = new Timer();
 	
+	public void start() {
+		TimerTask myTask = new TimerTask() {
+			public void run() {
+				List<Alien> AlienRow= new ArrayList<Alien>();
+				for (int i = 0; i<10;i++) {
+					Alien
+					add()
+				}
+			}
+		};
+	}
 	
 	
 	public static void gameOver() {
