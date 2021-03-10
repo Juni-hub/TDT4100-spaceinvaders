@@ -17,9 +17,17 @@ public class Player {
 		}
 	}
 	
-	public void skyt() {
+	public void shoot() {
 		Shot shot = new Shot(this.pos);
 		shot.shoot();
+	}
+	
+	public void moveLeft() {
+		pos -=1;
+	}
+	
+	public void moveRight() {
+		pos +=1;
 	}
 
 	public int getPos() {
