@@ -29,13 +29,22 @@ public class NameController {
     }
 
     @FXML
-    private void storeName(KeyEvent ke) {
+    private void storeName(KeyEvent ke) throws IOException {
     	if(ke.getCode() == KeyCode.ENTER) {
     		if(!textField.getText().isEmpty()) {
     			System.out.println(textField.getText());
-    			setName(textField.getText());
+    			// setName(textField.getText());
+    			showGame();
     		}
     	}
+    }
+    
+    public void showGame() throws IOException{ // Switch scene to ControlWindow
+		Parent root = FXMLLoader.load(getClass().getResource("GameWindow.fxml"));
+		Scene scene = new Scene(root);
+		Stage primaryStage = TestFX.getPrimaryStage();
+		primaryStage.setScene(scene);
+		primaryStage.show();		
     }
     
     public String getName() {

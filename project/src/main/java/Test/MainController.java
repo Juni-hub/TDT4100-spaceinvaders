@@ -28,7 +28,7 @@ public class MainController {
 		Scene scene = new Scene(root);
 		Stage primaryStage = TestFX.getPrimaryStage();
 		primaryStage.setScene(scene);
-		primaryStage.show();		
+		primaryStage.show();
     }
     
     public void showName(ActionEvent event) throws IOException { // Switch scene to ControlWindow
