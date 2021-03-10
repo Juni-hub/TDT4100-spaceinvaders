@@ -1,13 +1,21 @@
 package Test;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 public class Alien {
 	
 	private boolean alive = true;
-	private int posx;
-	private int posy = 10;
+	private double posx;
+	private double posy;
+	private double radius;
+	private Circle c;
 	
-	public Alien(int posx,int posy) {
+	public Alien(double posx,double posy, double radius, Circle c) {
 		this.posx = posx;
+		this.posy = posy;
+		this.radius = radius;
+		this.c = c;
 	}
 	
 	public void dead() {
@@ -27,19 +35,29 @@ public class Alien {
 		this.alive = alive;
 	}
 
-	public int getPosx() {
+	public double getPosx() {
 		return posx;
 	}
 
-	public void setPosx(int posx) {
+	public void setPosx(double posx) {
 		this.posx = posx;
 	}
 
-	public int getPosy() {
+	public double getPosy() {
 		return posy;
 	}
 
-	public void setPosy(int posy) {
+	public void setPosy(double posy) {
 		this.posy = posy;
+	}
+	
+	public void setColor(Color color) {
+		c.setFill(color);
+	}
+	
+	public void draw() {
+		c.setRadius(radius);
+		c.setTranslateX(posx);
+		c.setTranslateY(posy);
 	}
 }

@@ -1,15 +1,11 @@
 package Test;
 
 public class Shot {
-	private int posx;
-	private int posy;
+	
+	private double posx;
+	private double posy;
 		
-	public Shot(int pos) {
-		this.posx = pos;
-		this.posy = 0;
-	}
-		
-	public Shot(int posx, int posy) {
+	public Shot(double posx, double posy) {
 		this.posx = posx;
 		this.posy = posy;
 	}
@@ -25,31 +21,31 @@ public class Shot {
 				setPosy(this.posy-1);
 			}
 				/* hvis treff gjør spiller død*/
-			}
 		}
+	}
 		
-		private boolean checkIfAlien() {
-			
-		}
-
-		public int getPosx() {
-			return posx;
-		}
-
-		public void setPosx(int posx) {
-			this.posx = posx;
-		}
-
-		public int getPosy() {
-			return posy;
-		}
-
-		public void setPosy(int posy) {
-			this.posy = posy;
-		}
-		
-		
-		
+	private boolean checkIfAlien() {
+		// Do something
+		return true;
 	}
 
+	public double getPosx() {
+		return posx;
+	}
+
+	public void setPosx(double posx) {
+		this.posx = posx;
+	}
+
+	public double getPosy() {
+		return posy;
+	}
+
+	public void setPosy(double posy) {
+		this.posy = posy;
+	}
+		
+		
+		
 }
+
