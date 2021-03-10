@@ -7,11 +7,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class NameController {
+	
+	@FXML
+    private TextField textField;
+	private String name;
 	
 	@FXML
     void goToMain(ActionEvent e) throws IOException {
@@ -25,8 +30,19 @@ public class NameController {
     @FXML
     private void storeName(KeyEvent ke) {
     	if(ke.getCode() == KeyCode.ENTER) {
-    		System.out.println();
+    		if(!textField.getText().isEmpty()) {
+    			System.out.println(textField.getText());
+    			setName(textField.getText());
+    		}
     	}
     }
+    
+    public String getName() {
+		return name;
+	}
+    
+    public void setName(String name) {
+		this.name = name;
+	}
 
 }
