@@ -8,15 +8,16 @@ import javafx.scene.shape.Rectangle;
 public class GameController {
 
 		@FXML
-	    private Rectangle player;
+	    private Rectangle rectangle;
+		private Player player = new Player(name);
 
 	    @FXML
 	    public void KeyPressed(KeyEvent event) {
 	    	if (event.getCode() == KeyCode.LEFT) {
-	    		player.setPos(player.getPos() - 1);
+	    		player.moveLeft();
 	  
 	    	} else if (event.getCode() == KeyCode.RIGHT) {
-	    		player.setPos(player.getPos() + 1);
+	    		player.moveRight();
 	    	} else if (event.getCode() == KeyCode.SPACE) {
 	    		player.shoot();
 
