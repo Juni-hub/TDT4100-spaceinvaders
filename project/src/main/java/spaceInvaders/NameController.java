@@ -1,4 +1,4 @@
-package Test;
+package spaceInvaders;
 
 import java.io.IOException;
 
@@ -17,13 +17,12 @@ public class NameController {
 	
 	@FXML
     private TextField textField;
-	private String name;
 	
 	@FXML
     void goToMain(ActionEvent e) throws IOException {
     	Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 		Scene scene = new Scene(root);
-		Stage primaryStage = TestFX.getPrimaryStage();
+		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
 		primaryStage.show();	
     }
@@ -32,27 +31,21 @@ public class NameController {
     private void storeName(KeyEvent ke) throws IOException {
     	if(ke.getCode() == KeyCode.ENTER) {
     		if(!textField.getText().isEmpty()) {
+    			Player player = new Player(textField.getText());
+    			Board board = new Board(player);
     			System.out.println(textField.getText());
-    			// setName(textField.getText());
     			showGame();
     		}
     	}
     }
     
+    @FXML
     public void showGame() throws IOException{ // Switch scene to ControlWindow
-		Parent root = FXMLLoader.load(getClass().getResource("GameWindow.fxml"));
+    	Parent root = FXMLLoader.load(getClass().getResource("GameWindow.fxml"));
 		Scene scene = new Scene(root);
-		Stage primaryStage = TestFX.getPrimaryStage();
+		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
-		primaryStage.show();		
+		primaryStage.show();
     }
-    
-    public String getName() {
-		return name;
-	}
-    
-    public void setName(String name) {
-		this.name = name;
-	}
 
 }

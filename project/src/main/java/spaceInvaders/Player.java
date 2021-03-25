@@ -1,10 +1,11 @@
-package Test;
+package spaceInvaders;
 
 public class Player {
 	
 	private int life = 3;
-	private int pos = 5;
+	private double posx = 0;
 	private String name;
+	private Board board;
 	
 	public Player(String name) {
 		this.name = name;
@@ -18,25 +19,25 @@ public class Player {
 	}
 	
 	public void shoot() {
-		Shot shot = new Shot(this.pos);
+		Shot shot = new Shot(this.posx);
 		shot.shoot();
 	}
 	
 	public void moveLeft() {
-		pos -=1;
+		this.posx -=50;
 	}
 	
 	public void moveRight() {
-		pos +=1;
+		this.posx +=50;
 	}
 
-	public int getPos() {
-		return pos;
+	public double getPosx() {
+		return posx;
 	}
 
 
-	public void setPos(int pos) {
-		this.pos = pos;
+	public void setPos(double posx) {
+		this.posx = posx;
 	}
 
 
@@ -52,6 +53,9 @@ public class Player {
 		this.life = life;
 	}
 	
+	public void setBoard(Board board) {
+		this.board = board;
+	}
 	
 }
 

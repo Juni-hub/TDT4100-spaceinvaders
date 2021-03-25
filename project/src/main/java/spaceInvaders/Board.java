@@ -1,11 +1,11 @@
-package Test;
+package spaceInvaders;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -17,13 +17,37 @@ public class Board {
 	private int alienRadius = 20;
 	private Color alienColor = Color.GREEN;
 	private Circle c;
-	
 	private int boardWidth = 600;
 	private int boardHeight = 400;
+	private Player player;
 	
+	public Board(Player player) {
+		this.player = player;
+	}
 	
+	public void startGame() {
+		AnimationTimer timer = new AnimationTimer() {
+		private long lastUpdate; //forrige gang handle ble kjørt
+		
+		private double speed = 50; //antall piksler
+		
+		@Override
+		public void start() {
+			lastUpdate = System.nanoTime();
+			super.start();
+		}
+		
+		@Override
+		public void handle(long now) {
+			drawAliens();
+			long elapsedNanoSeconds = now - lastUpdate;
+			double elapsedSeconds = elapsedNanoSeconds/1000000000;
+			
+			lastUpdate = now;
+			}
+		};	
+	}
 	private List<Alien> alienGroup= new ArrayList<Alien>();
-	Timer timer = new Timer();
 	
 	public void drawAliens() {
 		for(Alien alien : alienGroup) {

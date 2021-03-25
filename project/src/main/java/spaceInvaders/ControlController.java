@@ -1,4 +1,4 @@
-package Test;
+package spaceInvaders;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class ControlController {
     void goToMain(ActionEvent event) throws IOException {
     	Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 		Scene scene = new Scene(root);
-		Stage primaryStage = TestFX.getPrimaryStage();
+		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
 		primaryStage.show();	
     }

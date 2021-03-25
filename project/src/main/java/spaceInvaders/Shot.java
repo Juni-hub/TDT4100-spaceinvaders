@@ -1,4 +1,4 @@
-package Test;
+package spaceInvaders;
 
 public class Shot {
 	
@@ -9,6 +9,12 @@ public class Shot {
 		this.posx = posx;
 		this.posy = posy;
 	}
+	
+	public Shot(double posx) {
+		this.posx = posx;
+		this.posy = 0;
+	}
+
 		
 	public void shoot() {
 		if (getPosy() == 0) {

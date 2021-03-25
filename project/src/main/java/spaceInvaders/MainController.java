@@ -1,4 +1,4 @@
-package Test;
+package spaceInvaders;
 
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import Test.TestFX;
+import spaceInvaders.AppFX;
 
 public class MainController {
 	
@@ -26,7 +26,7 @@ public class MainController {
     public void showControls(ActionEvent event) throws IOException { // Switch scene to ControlWindow
 		Parent root = FXMLLoader.load(getClass().getResource("ControlWindow.fxml"));
 		Scene scene = new Scene(root);
-		Stage primaryStage = TestFX.getPrimaryStage();
+		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
 		primaryStage.show();
     }
@@ -34,7 +34,7 @@ public class MainController {
     public void showName(ActionEvent event) throws IOException { // Switch scene to ControlWindow
 		Parent root = FXMLLoader.load(getClass().getResource("NameWindow.fxml"));
 		Scene scene = new Scene(root);
-		Stage primaryStage = TestFX.getPrimaryStage();
+		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
 		primaryStage.show();		
     }

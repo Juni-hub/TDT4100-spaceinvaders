@@ -1,4 +1,4 @@
-package Test;
+package spaceInvaders;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,15 +7,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class TestFX extends Application {
+public class AppFX extends Application {
 	private static Stage primaryStage; // **Declare static Stage**
 
     private void setPrimaryStage(Stage stage) {
-        TestFX.primaryStage = stage;
+        AppFX.primaryStage = stage;
     }
 
     static public Stage getPrimaryStage() {
-        return TestFX.primaryStage;
+        return AppFX.primaryStage;
     }
 	
 	public static void main(String[] args) {
@@ -30,5 +30,7 @@ public class TestFX extends Application {
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
 	}
+	
 }
