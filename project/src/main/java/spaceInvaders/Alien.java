@@ -8,14 +8,13 @@ public class Alien {
 	private boolean alive = true;
 	private double posx;
 	private double posy;
-	private double radius;
-	private Circle c;
+	private double radius = 30;
+	private Circle c = new Circle();
+	private Color alienColor = Color.GREEN;
 	
-	public Alien(double posx,double posy, double radius, Circle c) {
+	public Alien(double posx,double posy) {
 		this.posx = posx;
 		this.posy = posy;
-		this.radius = radius;
-		this.c = c;
 	}
 	
 	public void dead() {
@@ -51,13 +50,17 @@ public class Alien {
 		this.posy = posy;
 	}
 	
-	public void setColor(Color color) {
-		c.setFill(color);
+	
+	public Color getAlienColor() {
+		return alienColor;
 	}
 	
-	public void draw() {
-		c.setRadius(radius);
-		c.setTranslateX(posx);
-		c.setTranslateY(posy);
+	public double getRadius() {
+		return radius;
 	}
+	
+	public Circle getC() {
+		return c;
+	}
+	
 }

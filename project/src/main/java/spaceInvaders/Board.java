@@ -14,58 +14,49 @@ public class Board {
 	private int score = 0;
 	private int highScore = 0;
 	private int aliensPerRow = 10;
-	private int alienRadius = 20;
-	private Color alienColor = Color.GREEN;
-	private Circle c;
 	private int boardWidth = 600;
 	private int boardHeight = 400;
 	private Player player;
+	private List<Alien> alienGroup= new ArrayList<Alien>();
+	private Boolean endGame;
 	
 	public Board(Player player) {
 		this.player = player;
+		this.endGame = false;
 	}
 	
 	public void startGame() {
-		AnimationTimer timer = new AnimationTimer() {
-		private long lastUpdate; //forrige gang handle ble kjørt
-		
-		private double speed = 50; //antall piksler
-		
-		@Override
-		public void start() {
-			lastUpdate = System.nanoTime();
-			super.start();
-		}
-		
-		@Override
-		public void handle(long now) {
-			drawAliens();
-			long elapsedNanoSeconds = now - lastUpdate;
-			double elapsedSeconds = elapsedNanoSeconds/1000000000;
+	}
+	
+	public void drawAlienRow() {
+		for(int i = 0; i<aliensPerRow;i++) {
+			Alien alien = new Alien(i*60+30,30);
+			alienGroup.add(alien);
 			
-			lastUpdate = now;
-			}
-		};	
-	}
-	private List<Alien> alienGroup= new ArrayList<Alien>();
-	
-	public void drawAliens() {
-		for(Alien alien : alienGroup) {
-			alien.draw();
 		}
 	}
 	
-	public void addAlien(double x, double y) {	
-		Alien alien = new Alien(x,y,alienRadius,c);
-		alien.setColor(alienColor);
-		alienGroup.add(alien);
-	}
-	
-	
-	public static void gameOver() {
+	public void pushAliensDown() {
+		for (int i = 0; i <alienGroup.size();i++) {
+			if (alienGroup.get(i).getPosy() == 30) {
+				alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+30);
+			} else {
+			alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+60);
+			}
+		}
 		
+		for (int i=0; i<aliensPerRow;i++) {
+			if (alienGroup.get(i).getPosy() == 420) {
+				gameOver();
+			}
+		}
 	}
 	
+	
+	public void gameOver() {
+		this.endGame = true;
+	}
+
 	public int getScore() {
 		return score;
 	}
@@ -85,8 +76,15 @@ public class Board {
 		this.highScore = highScore;
 	}
 	
-	public static void main(String[] args) {
+	public List<Alien> getAlienGroup() {
+		return alienGroup;
 	}
 	
+	public int getAliensPerRow() {
+		return aliensPerRow;
+	}
 	
+	public Boolean getEndGame() {
+		return endGame;
+	}
 }
