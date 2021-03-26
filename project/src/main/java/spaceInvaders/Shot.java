@@ -1,38 +1,34 @@
 package spaceInvaders;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
 public class Shot {
 	
 	private double posx;
 	private double posy;
-		
-	public Shot(double posx, double posy) {
-		this.posx = posx;
-		this.posy = posy;
-	}
+	private Color shotColor = Color.BLACK;
+	private double shotRadius = 10;
+	private Boolean hit;
 	
 	public Shot(double posx) {
-		this.posx = posx;
-		this.posy = 0;
+		this.posx = posx+300;
+		this.posy = 350;
+		this.hit = false;
 	}
 
 		
-	public void shoot() {
-		if (getPosy() == 0) {
-			for (int i = 0; i<10;i++) {
-				setPosy(this.posy+1);
-					/*hvis treff gjør alien død*/
-			}
-		} else {
-			for (int i = 0; i<getPosy();i++) {
-				setPosy(this.posy-1);
-			}
-				/* hvis treff gjør spiller død*/
-		}
-	}
-		
-	private boolean checkIfAlien() {
-		// Do something
-		return true;
+	public void moveShot(Board board) {
+		/*for (Alien alien: board.getAlienGroup()) {
+			if(alien.getPosx()-this.getPosx() <0 && alien.getPosy() == this.getPosy() && alien.getAlive() == true)
+				alien.setAlive(false);
+				this.hit = true;
+		}*/
+		this.setPosy (this.getPosy()-50);
 	}
 
 	public double getPosx() {
@@ -51,7 +47,16 @@ public class Shot {
 		this.posy = posy;
 	}
 		
-		
-		
+	public Color getShotColor() {
+		return shotColor;
+	}
+	
+	public double getShotRadius() {
+		return shotRadius;
+	}
+	
+	public Boolean getHit() {
+		return hit;
+	}
 }
 

@@ -20,13 +20,8 @@ public class Alien {
 	public void dead() {
 		this.alive = false;
 	}
-	
-	public void skyt() {
-		Shot shot = new Shot(this.posx, this.posy);
-		shot.shoot();
-	}
 
-	public boolean isAlive() {
+	public boolean getAlive() {
 		return alive;
 	}
 
@@ -62,5 +57,7 @@ public class Alien {
 	public Circle getC() {
 		return c;
 	}
+	
+	
 	
 }

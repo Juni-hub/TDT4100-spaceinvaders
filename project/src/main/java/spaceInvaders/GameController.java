@@ -8,8 +8,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,7 +37,7 @@ public class GameController{
 	private Rectangle rectangle;
 	private Player player = new Player("Ola");
 	private Board board = new Board(player);
-	
+	private List<Circle> alienCircles = new ArrayList<Circle>();
 	
 	@FXML
 	public void startGame() {
@@ -66,8 +71,7 @@ public class GameController{
     	
     	} else if (event.getCode() == KeyCode.SPACE) {
     		System.out.println("space");
-    		player.shoot();
-    		moveRectangle();
+    		shoot();
 		}
 	}
     
@@ -96,8 +100,7 @@ public class GameController{
     	if(board.getAlienGroup().size() != 0 ) {
     		board.pushAliensDown();
     		for (int i = 0; i<board.getAlienGroup().size();i++) {
-    			ObservableList<Node> children = pane.getChildren();
-    			Node c = children.get(i);
+    			Circle c = alienCircles.get(i);
     			TranslateTransition transition = new TranslateTransition();
     			transition.setDuration(Duration.seconds(0.5));
     			transition.setToY(board.getAlienGroup().get(i).getPosy());
@@ -113,8 +116,31 @@ public class GameController{
         	c.setFill(alien.getAlienColor());
         	c.setCenterX(alien.getPosx());
         	c.setCenterY(alien.getPosy());
+        	alienCircles.add(c);
         	pane.getChildren().add(c);
     	}
+    }
+    
+    @FXML
+    public void shoot() {
+    	Shot shot = new Shot(player.getPosx());
+    	Circle c = new Circle();
+    	c.setRadius(shot.getShotRadius());
+    	c.setFill(shot.getShotColor());
+    	c.setCenterX(shot.getPosx());
+    	c.setCenterY(shot.getPosy());
+    	pane.getChildren().add(c);
+    	while (shot.getHit() == false && shot.getPosy() != 0) {
+    		shot.moveShot(board);
+    		
+    		TranslateTransition transition = new TranslateTransition();
+			transition.setDuration(Duration.seconds(0.5));
+			transition.setToY(shot.getPosy());
+			transition.setNode(c);
+			transition.play(); 
+    	}
+		
+    	
     }
 
 }

@@ -10,9 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Board {
-
-	private int score = 0;
-	private int highScore = 0;
+	
 	private int aliensPerRow = 10;
 	private int boardWidth = 600;
 	private int boardHeight = 400;
@@ -46,7 +44,7 @@ public class Board {
 		}
 		
 		for (int i=0; i<aliensPerRow;i++) {
-			if (alienGroup.get(i).getPosy() == 420) {
+			if (alienGroup.get(i).getPosy() == 300) {
 				gameOver();
 			}
 		}
@@ -55,25 +53,6 @@ public class Board {
 	
 	public void gameOver() {
 		this.endGame = true;
-	}
-
-	public int getScore() {
-		return score;
-	}
-	
-	public void setScore(int score) {
-		if (score > getHighScore()) {
-			this.setHighScore(score);
-		}
-		this.score = score;
-	}
-	
-	public int getHighScore() {
-		return highScore;
-	}
-	
-	public void setHighScore(int highScore) {
-		this.highScore = highScore;
 	}
 	
 	public List<Alien> getAlienGroup() {
