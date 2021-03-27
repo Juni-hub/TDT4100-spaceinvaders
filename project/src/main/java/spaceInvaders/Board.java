@@ -11,9 +11,10 @@ import javafx.scene.shape.Circle;
 
 public class Board {
 	
-	private int aliensPerRow = 10;
+	private int aliensPerRow = 20;
 	private int boardWidth = 600;
 	private int boardHeight = 400;
+	private double alienRadius = boardWidth / (2*aliensPerRow);
 	private Player player;
 	private List<Alien> alienGroup= new ArrayList<Alien>();
 	private Boolean endGame;
@@ -28,7 +29,7 @@ public class Board {
 	
 	public void drawAlienRow() {
 		for(int i = 0; i<aliensPerRow;i++) {
-			Alien alien = new Alien(i*60+30,30);
+			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius);
 			alienGroup.add(alien);
 			
 		}
@@ -36,10 +37,10 @@ public class Board {
 	
 	public void pushAliensDown() {
 		for (int i = 0; i <alienGroup.size();i++) {
-			if (alienGroup.get(i).getPosy() == 30) {
-				alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+30);
+			if (alienGroup.get(i).getPosy() == alienRadius) {
+				alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+alienRadius);
 			} else {
-			alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+60);
+			alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+(2 * alienRadius));
 			}
 		}
 		
@@ -52,6 +53,7 @@ public class Board {
 	
 	
 	public void gameOver() {
+		System.out.println("GAME OVER!");
 		this.endGame = true;
 	}
 	

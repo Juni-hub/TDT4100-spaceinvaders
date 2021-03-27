@@ -28,7 +28,13 @@ import javafx.collections.ObservableList;
 public class GameController{
 		
 	private int boardWidth = 600;
-	private int boardHeight = 450;
+	private int boardHeight = 400;
+	private double alienAnimDuration = 0.1;
+	private int direction = 0;
+	private int targetFPS = 30;
+	private int cycleDuration = 1000 / targetFPS;
+	private int speed = 3;
+	int frameCounter = 0;
 
 	@FXML
     private Pane pane;
@@ -42,14 +48,20 @@ public class GameController{
 	@FXML
 	public void startGame() {
 		System.out.println("start");
+		System.out.println(cycleDuration);
 		board.startGame();
 		pane.requestFocus();
 		
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
-			if(!board.getEndGame() == true) {
-				moveAlienRow(); 
-			} else {
-				Platform.exit();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
+			frameCounter += 1;
+			player.setPosx(player.getPosx() + speed * direction);
+			moveRectangle();
+			if (frameCounter % (targetFPS*5) == 0) {
+				if(!board.getEndGame() == true) {
+					moveAlienRow(); 
+				} else {
+					Platform.exit();
+				}
 			}
 		}));
 		
@@ -57,16 +69,45 @@ public class GameController{
 		timeline.play();
 	}
 	
+	public int getDirection() {
+		return direction;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+	
+	
+	
+	// Hvorfor funker ikke denne? Jeg vil at den skal se når piltastene blir sluppet opp :(
+	
+	@FXML
+	public void KeyReleased(KeyEvent event) {
+		System.out.println("KEY RELEASED");
+		if(event.getCode() == KeyCode.LEFT) {
+			System.out.println("LEFT KEY RELEASED");
+			if(getDirection() == -1) {
+				setDirection(0);
+			}
+		} else if(event.getCode() == KeyCode.RIGHT) {
+			if(getDirection() == 1) {
+				setDirection(0);
+			}
+		}
+	}
+	
    @FXML
     public void KeyPressed(KeyEvent event) {
     	if (event.getCode() == KeyCode.LEFT) {
     		System.out.println("left");
-    		player.moveLeft();
+    		setDirection(-1);
+    		// player.moveLeft();
     		moveRectangle();
   
     	} else if (event.getCode() == KeyCode.RIGHT) {
     		System.out.println("right");
-    		player.moveRight();
+    		setDirection(1);
+    		// player.moveRight();
     		moveRectangle();
     	
     	} else if (event.getCode() == KeyCode.SPACE) {
@@ -78,7 +119,7 @@ public class GameController{
     @FXML
     public void moveRectangle(){
     	TranslateTransition transition = new TranslateTransition();
-		transition.setDuration(Duration.seconds(0.5));
+		transition.setDuration(Duration.millis(cycleDuration));
 		transition.setToX(player.getPosx());
 		transition.setNode(rectangle);
 		transition.play(); 
@@ -102,7 +143,7 @@ public class GameController{
     		for (int i = 0; i<board.getAlienGroup().size();i++) {
     			Circle c = alienCircles.get(i);
     			TranslateTransition transition = new TranslateTransition();
-    			transition.setDuration(Duration.seconds(0.5));
+    			transition.setDuration(Duration.seconds(alienAnimDuration));
     			transition.setToY(board.getAlienGroup().get(i).getPosy());
     			transition.setNode(c);
     			transition.play(); 

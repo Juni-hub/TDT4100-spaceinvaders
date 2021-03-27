@@ -2,19 +2,21 @@ package spaceInvaders;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import spaceInvaders.Board;
 
 public class Alien {
 	
 	private boolean alive = true;
 	private double posx;
 	private double posy;
-	private double radius = 30;
+	private double radius;
 	private Circle c = new Circle();
 	private Color alienColor = Color.GREEN;
 	
-	public Alien(double posx,double posy) {
+	public Alien(double posx,double posy, double radius) {
 		this.posx = posx;
 		this.posy = posy;
+		this.radius = radius;
 	}
 	
 	public void dead() {
