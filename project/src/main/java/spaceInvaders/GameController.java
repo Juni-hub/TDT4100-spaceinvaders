@@ -29,12 +29,16 @@ public class GameController{
 		
 	private int boardWidth = 600;
 	private int boardHeight = 400;
+	private int playerWidth = 50;
 	private double alienAnimDuration = 0.1;
 	private int direction = 0;
 	private int targetFPS = 30;
 	private int cycleDuration = 1000 / targetFPS;
 	private int speed = 3;
+	private int shotSpeed = 3;
 	int frameCounter = 0;
+	private int secondsPerAlienRow = 5;
+	private double newPosX;
 
 	@FXML
     private Pane pane;
@@ -44,6 +48,7 @@ public class GameController{
 	private Player player = new Player("Ola");
 	private Board board = new Board(player);
 	private List<Circle> alienCircles = new ArrayList<Circle>();
+	private List<Circle> shotCircles = new ArrayList<Circle>();
 	
 	@FXML
 	public void startGame() {
@@ -54,9 +59,18 @@ public class GameController{
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
-			player.setPosx(player.getPosx() + speed * direction);
+			newPosX = player.getPosx() + speed * direction;
+			if(newPosX < -(boardWidth - playerWidth) / 2) {
+				newPosX = -(boardWidth - playerWidth) / 2;
+			}
+			else if(newPosX > (boardWidth - playerWidth) / 2) {
+				newPosX = (boardWidth - playerWidth) / 2;
+			}
+			player.setPosx(newPosX);
 			moveRectangle();
-			if (frameCounter % (targetFPS*5) == 0) {
+			updatePosOfShots();
+			moveShots();
+			if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
 				if(!board.getEndGame() == true) {
 					moveAlienRow(); 
 				} else {
@@ -80,12 +94,11 @@ public class GameController{
 	
 	
 	// Hvorfor funker ikke denne? Jeg vil at den skal se når piltastene blir sluppet opp :(
+	// DEN FUNKER NÅ WOHOOO
 	
 	@FXML
 	public void KeyReleased(KeyEvent event) {
-		System.out.println("KEY RELEASED");
 		if(event.getCode() == KeyCode.LEFT) {
-			System.out.println("LEFT KEY RELEASED");
 			if(getDirection() == -1) {
 				setDirection(0);
 			}
@@ -99,19 +112,16 @@ public class GameController{
    @FXML
     public void KeyPressed(KeyEvent event) {
     	if (event.getCode() == KeyCode.LEFT) {
-    		System.out.println("left");
     		setDirection(-1);
     		// player.moveLeft();
     		moveRectangle();
   
     	} else if (event.getCode() == KeyCode.RIGHT) {
-    		System.out.println("right");
     		setDirection(1);
     		// player.moveRight();
     		moveRectangle();
     	
     	} else if (event.getCode() == KeyCode.SPACE) {
-    		System.out.println("space");
     		shoot();
 		}
 	}
@@ -164,24 +174,34 @@ public class GameController{
     
     @FXML
     public void shoot() {
-    	Shot shot = new Shot(player.getPosx());
     	Circle c = new Circle();
-    	c.setRadius(shot.getShotRadius());
-    	c.setFill(shot.getShotColor());
+    	Shot shot = new Shot(player.getPosx(), c);
+    	board.getShotGroup().add(shot);
     	c.setCenterX(shot.getPosx());
     	c.setCenterY(shot.getPosy());
+    	c.setRadius(shot.getShotRadius());
+    	c.setFill(shot.getShotColor());
     	pane.getChildren().add(c);
-    	while (shot.getHit() == false && shot.getPosy() != 0) {
-    		shot.moveShot(board);
-    		
+    }
+    
+    public void updatePosOfShots() {
+    	for(int i=0; i < board.getShotGroup().size(); i++) {
+	    	Shot shot = board.getShotGroup().get(i);
+			shot.setPosy(shot.getPosy() - shotSpeed);
+	    }
+    }
+    
+    
+    public void moveShots() {
+    	for(int i=0; i < board.getShotGroup().size(); i++) {
+    		Shot shot = board.getShotGroup().get(i);
+    		Circle c = shot.getC();
     		TranslateTransition transition = new TranslateTransition();
-			transition.setDuration(Duration.seconds(0.5));
-			transition.setToY(shot.getPosy());
+			transition.setDuration(Duration.millis(cycleDuration));
+			transition.setByY(-shotSpeed);
 			transition.setNode(c);
 			transition.play(); 
     	}
-		
-    	
     }
 
 }

@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#KeyPressed" onKeyTyped="#KeyPressed" onMouseClicked="#startGame" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spaceInvaders.GameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#KeyPressed" onKeyReleased="#KeyReleased" onKeyTyped="#KeyPressed" onMouseClicked="#startGame" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spaceInvaders.GameController">
    <center>
       <Pane fx:id="pane" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <Rectangle fx:id="rectangle" arcHeight="5.0" fill="DODGERBLUE" height="50.0" onKeyPressed="#KeyPressed" onKeyTyped="#KeyPressed" stroke="BLACK" strokeType="INSIDE" width="50.0" BorderPane.alignment="BOTTOM_CENTER">
+      <Rectangle fx:id="rectangle" arcHeight="5.0" fill="DODGERBLUE" height="50.0" onKeyPressed="#KeyPressed" onKeyReleased="#KeyReleased" onKeyTyped="#KeyPressed" stroke="BLACK" strokeType="INSIDE" width="50.0" BorderPane.alignment="BOTTOM_CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin></Rectangle>

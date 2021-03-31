@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 public class Shot {
@@ -14,23 +15,23 @@ public class Shot {
 	private Color shotColor = Color.BLACK;
 	private double shotRadius = 10;
 	private Boolean hit;
+	private Circle c;
 	
-	public Shot(double posx) {
+	public Shot(double posx, Circle c) {
 		this.posx = posx+300;
 		this.posy = 350;
 		this.hit = false;
+		this.c = c;
 	}
-
-		
-	public void moveShot(Board board) {
-		/*for (Alien alien: board.getAlienGroup()) {
-			if(alien.getPosx()-this.getPosx() <0 && alien.getPosy() == this.getPosy() && alien.getAlive() == true)
-				alien.setAlive(false);
-				this.hit = true;
-		}*/
-		this.setPosy (this.getPosy()-50);
+	
+	public void setC(Circle c) {
+		this.c = c;
 	}
-
+	
+	public Circle getC() {
+		return c;
+	}
+	
 	public double getPosx() {
 		return posx;
 	}

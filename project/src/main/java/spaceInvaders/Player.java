@@ -2,6 +2,9 @@ package spaceInvaders;
 
 public class Player {
 	
+	private int playerWidth = 50;
+	private int boardWidth = 600;
+	
 	private double posx = 0;
 	private String name;
 	private Board board;
@@ -10,13 +13,6 @@ public class Player {
 		this.name = name;
 	}
 	
-	public void moveLeft() {
-		this.posx -=50;
-	}
-	
-	public void moveRight() {
-		this.posx +=50;
-	}
 
 	public double getPosx() {
 		return posx;

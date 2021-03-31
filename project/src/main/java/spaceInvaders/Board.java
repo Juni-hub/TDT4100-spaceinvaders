@@ -16,12 +16,17 @@ public class Board {
 	private int boardHeight = 400;
 	private double alienRadius = boardWidth / (2*aliensPerRow);
 	private Player player;
-	private List<Alien> alienGroup= new ArrayList<Alien>();
+	private List<Alien> alienGroup = new ArrayList<Alien>();
+	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private Boolean endGame;
 	
 	public Board(Player player) {
 		this.player = player;
 		this.endGame = false;
+	}
+	
+	public List<Shot> getShotGroup() {
+		return shotGroup;
 	}
 	
 	public void startGame() {
