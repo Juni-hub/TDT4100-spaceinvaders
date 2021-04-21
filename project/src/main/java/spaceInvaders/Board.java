@@ -29,12 +29,21 @@ public class Board {
 		return shotGroup;
 	}
 	
+	public void setAlienGroup(List<Alien> alienGroup) {
+		this.alienGroup = alienGroup;
+	}
+	
+	public void setShotGroup(List<Shot> shotGroup) {
+		this.shotGroup = shotGroup;
+	}
+	
 	public void startGame() {
 	}
 	
 	public void drawAlienRow() {
 		for(int i = 0; i<aliensPerRow;i++) {
-			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius);
+			Circle c = new Circle();
+			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius, c);
 			alienGroup.add(alien);
 			
 		}
