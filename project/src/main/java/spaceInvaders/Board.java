@@ -50,15 +50,12 @@ public class Board {
 	}
 	
 	public void pushAliensDown() {
-		for (int i = 0; i <alienGroup.size();i++) {
+		for (int i = 0; i < alienGroup.size(); i++) {
 			if (alienGroup.get(i).getPosy() == alienRadius) {
 				alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+alienRadius);
 			} else {
 			alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+(2 * alienRadius));
 			}
-		}
-		
-		for (int i=0; i<aliensPerRow;i++) {
 			if (alienGroup.get(i).getPosy() == 300) {
 				gameOver();
 			}

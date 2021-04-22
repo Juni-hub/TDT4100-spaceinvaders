@@ -66,10 +66,19 @@ public class GameController{
 			else if(newPosX > (boardWidth - playerWidth) / 2) {
 				newPosX = (boardWidth - playerWidth) / 2;
 			}
+			
 			player.setPosx(newPosX);
 			moveRectangle();
 			updatePosOfShots();
 			moveShots();
+			if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
+				if(!board.getEndGame() == true) {
+					moveAlienRow(); 
+				} else {
+					Platform.exit();
+				}
+			}
+			
 			List<Alien> aliens = board.getAlienGroup();
 			List<Shot> shots = board.getShotGroup();
 			List<Alien> aliensToRemove = new ArrayList<Alien>();
@@ -82,6 +91,8 @@ public class GameController{
 					if(shot.hitsAlien(alien.getPosx(), alien.getPosy(), alien.getRadius())) {
 						aliensToRemove.add(alien);
 						shotsToRemove.add(shot);
+						pane.getChildren().remove(alien.getC());
+						pane.getChildren().remove(shot.getC());
 					}
 				}
 			}
@@ -104,14 +115,6 @@ public class GameController{
 			
 			board.setAlienGroup(aliens);
 			board.setShotGroup(shots);
-			
-			if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
-				if(!board.getEndGame() == true) {
-					moveAlienRow(); 
-				} else {
-					Platform.exit();
-				}
-			}
 		}));
 		
 		timeline.setCycleCount(Animation.INDEFINITE);
@@ -211,7 +214,6 @@ public class GameController{
     	board.getShotGroup().add(shot);
     	c.setCenterX(shot.getPosx());
     	c.setCenterY(shot.getPosy());
-    	System.out.println(shot.getPosy());
     	c.setRadius(shot.getShotRadius());
     	c.setFill(shot.getShotColor());
     	pane.getChildren().add(c);
@@ -231,7 +233,7 @@ public class GameController{
     		Circle c = shot.getC();
     		TranslateTransition transition = new TranslateTransition();
 			transition.setDuration(Duration.millis(cycleDuration));
-			transition.setFromY(shot.getPosy());
+			transition.setToY(shot.getPosy());
 			transition.setNode(c);
 			transition.play(); 
     	}
