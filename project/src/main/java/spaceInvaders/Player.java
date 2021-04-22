@@ -13,8 +13,7 @@ public class Player {
 		this.setName(name);
 	}
 	
-<<<<<<< HEAD
-=======
+
 	public void moveLeft() {
 		if (posx != -300) {
 			this.posx -=50;
@@ -26,7 +25,6 @@ public class Player {
 			this.posx +=50;
 		}
 	}
->>>>>>> refs/remotes/origin/Filbehandling
 
 	public double getPosx() {
 		return posx;

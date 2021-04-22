@@ -32,7 +32,6 @@ import javafx.collections.ObservableList;
 
 public class GameController{
 		
-<<<<<<< HEAD
 	private int boardWidth = 600;
 	private int boardHeight = 400;
 	private int playerWidth = 50;
@@ -46,8 +45,6 @@ public class GameController{
 	private int secondsPerAlienRow = 5;
 	private double newPosX;
 
-=======
->>>>>>> refs/remotes/origin/Filbehandling
 	@FXML
     private Pane pane;
 	@FXML
@@ -71,13 +68,12 @@ public class GameController{
 		board.startGame();
 		pane.requestFocus();
 		
-<<<<<<< HEAD
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
 			newPosX = player.getPosx() + speed * direction;
 			if(newPosX < -(boardWidth - playerWidth) / 2) {
 				newPosX = -(boardWidth - playerWidth) / 2;
-=======
+				
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(6), event -> {
 			if(!board.getEndGame() == true) {
 				moveAlienRow();
@@ -93,7 +89,6 @@ public class GameController{
 				text.setStyle("-fx-font-alignment: center");
 				pane.getChildren().add(text);
 				//Platform.exit();
->>>>>>> refs/remotes/origin/Filbehandling
 			}
 			else if(newPosX > (boardWidth - playerWidth) / 2) {
 				newPosX = (boardWidth - playerWidth) / 2;
@@ -160,9 +155,6 @@ public class GameController{
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-	
-	// Hvorfor funker ikke denne? Jeg vil at den skal se når piltastene blir sluppet opp :(
-	// DEN FUNKER NÅ WOHOOO
 	
 	@FXML
 	public void KeyReleased(KeyEvent event) {
