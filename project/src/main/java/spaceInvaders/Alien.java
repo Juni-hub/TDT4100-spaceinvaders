@@ -13,10 +13,11 @@ public class Alien {
 	private Circle c = new Circle();
 	private Color alienColor = Color.GREEN;
 	
-	public Alien(double posx,double posy, double radius) {
+	public Alien(double posx,double posy, double radius, Circle c) {
 		this.posx = posx;
 		this.posy = posy;
 		this.radius = radius;
+		this.c = c;
 	}
 	
 	public void dead() {
@@ -58,6 +59,10 @@ public class Alien {
 	
 	public Circle getC() {
 		return c;
+	}
+	
+	public void setC(Circle c) {
+		this.c = c;
 	}
 	
 	

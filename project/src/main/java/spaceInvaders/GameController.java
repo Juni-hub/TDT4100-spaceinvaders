@@ -66,6 +66,7 @@ public class GameController{
 			else if(newPosX > (boardWidth - playerWidth) / 2) {
 				newPosX = (boardWidth - playerWidth) / 2;
 			}
+			
 			player.setPosx(newPosX);
 			moveRectangle();
 			updatePosOfShots();
@@ -77,6 +78,43 @@ public class GameController{
 					Platform.exit();
 				}
 			}
+			
+			List<Alien> aliens = board.getAlienGroup();
+			List<Shot> shots = board.getShotGroup();
+			List<Alien> aliensToRemove = new ArrayList<Alien>();
+			List<Shot> shotsToRemove = new ArrayList<Shot>();
+			
+			for(int i=0; i < shots.size(); i++) {
+				Shot shot = shots.get(i);
+				for(int j=0; j < aliens.size(); j++) {
+					Alien alien = aliens.get(j);
+					if(shot.hitsAlien(alien.getPosx(), alien.getPosy(), alien.getRadius())) {
+						aliensToRemove.add(alien);
+						shotsToRemove.add(shot);
+						pane.getChildren().remove(alien.getC());
+						pane.getChildren().remove(shot.getC());
+					}
+				}
+			}
+			
+			for(Alien alien : aliensToRemove) {
+				try {
+					aliens.remove(alien);
+				} catch (Exception e){
+					System.out.println("Already removed");
+				}
+			}
+			
+			for(Shot shot : shotsToRemove) {
+				try {
+					shots.remove(shot);
+				} catch (Exception e){
+					System.out.println("Already removed");
+				}
+			}
+			
+			board.setAlienGroup(aliens);
+			board.setShotGroup(shots);
 		}));
 		
 		timeline.setCycleCount(Animation.INDEFINITE);
@@ -90,8 +128,6 @@ public class GameController{
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-	
-	
 	
 	// Hvorfor funker ikke denne? Jeg vil at den skal se når piltastene blir sluppet opp :(
 	// DEN FUNKER NÅ WOHOOO
@@ -151,7 +187,7 @@ public class GameController{
     	if(board.getAlienGroup().size() != 0 ) {
     		board.pushAliensDown();
     		for (int i = 0; i<board.getAlienGroup().size();i++) {
-    			Circle c = alienCircles.get(i);
+    			Circle c = board.getAlienGroup().get(i).getC();
     			TranslateTransition transition = new TranslateTransition();
     			transition.setDuration(Duration.seconds(alienAnimDuration));
     			transition.setToY(board.getAlienGroup().get(i).getPosy());
@@ -162,12 +198,11 @@ public class GameController{
     	board.drawAlienRow();
     	for (int i = 0; i<board.getAliensPerRow();i++) {
     		Alien alien = board.getAlienGroup().get(board.getAlienGroup().size()-i-1);
-    		Circle c = new Circle();
+    		Circle c = alien.getC();
         	c.setRadius(alien.getRadius());
         	c.setFill(alien.getAlienColor());
         	c.setCenterX(alien.getPosx());
         	c.setCenterY(alien.getPosy());
-        	alienCircles.add(c);
         	pane.getChildren().add(c);
     	}
     }
@@ -198,7 +233,7 @@ public class GameController{
     		Circle c = shot.getC();
     		TranslateTransition transition = new TranslateTransition();
 			transition.setDuration(Duration.millis(cycleDuration));
-			transition.setByY(-shotSpeed);
+			transition.setToY(shot.getPosy());
 			transition.setNode(c);
 			transition.play(); 
     	}

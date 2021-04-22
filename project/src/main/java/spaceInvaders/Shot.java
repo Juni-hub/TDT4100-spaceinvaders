@@ -13,7 +13,7 @@ public class Shot {
 	private double posx;
 	private double posy;
 	private Color shotColor = Color.BLACK;
-	private double shotRadius = 10;
+	private double shotRadius = 5;
 	private Boolean hit;
 	private Circle c;
 	
@@ -58,6 +58,16 @@ public class Shot {
 	
 	public Boolean getHit() {
 		return hit;
+	}
+	
+	public Boolean hitsAlien(double a_x, double a_y, double radius) {
+		double dist = Math.pow(a_x-this.posx, 2) + Math.pow(a_y-this.posy, 2);
+		if(dist < (radius + this.shotRadius)*(radius + this.shotRadius)) {
+			hit = true;
+			System.out.println(dist);
+			return true;
+		}
+		return false;
 	}
 }
 
