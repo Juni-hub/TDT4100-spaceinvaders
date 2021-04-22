@@ -7,15 +7,19 @@ public class Player {
 	private Board board;
 	
 	public Player(String name) {
-		this.name = name;
+		this.setName(name);
 	}
 	
 	public void moveLeft() {
-		this.posx -=50;
+		if (posx != -300) {
+			this.posx -=50;
+		}
 	}
 	
 	public void moveRight() {
-		this.posx +=50;
+		if (posx != 300) {
+			this.posx +=50;
+		}
 	}
 
 	public double getPosx() {

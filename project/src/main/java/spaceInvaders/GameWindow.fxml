@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#KeyPressed" onKeyTyped="#KeyPressed" onMouseClicked="#startGame" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="spaceInvaders.GameController">
    <center>
-      <Pane fx:id="pane" prefHeight="450.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <Pane fx:id="pane" prefHeight="450.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="score" blendMode="SRC_ATOP" editable="false" focusTraversable="false" layoutX="14.0" layoutY="309.0" prefHeight="27.0" prefWidth="87.0" text="Score: 0" />
+         </children></Pane>
    </center>
    <bottom>
       <Rectangle fx:id="rectangle" arcHeight="5.0" fill="DODGERBLUE" height="50.0" onKeyPressed="#KeyPressed" onKeyTyped="#KeyPressed" stroke="BLACK" strokeType="INSIDE" width="50.0" BorderPane.alignment="BOTTOM_CENTER">

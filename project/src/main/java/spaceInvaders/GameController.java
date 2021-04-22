@@ -2,14 +2,19 @@ package spaceInvaders;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -27,15 +32,18 @@ import javafx.collections.ObservableList;
 
 public class GameController{
 		
-	private int boardWidth = 600;
-	private int boardHeight = 450;
-
 	@FXML
     private Pane pane;
-	
 	@FXML
 	private Rectangle rectangle;
-	private Player player = new Player("Ola");
+	@FXML
+	private TextField score;
+	@FXML
+	private BorderPane borderPane;
+	
+	private Saver saver = new Saver();
+	private String name = saver.readFromFile().get(saver.readFromFile().size()-1);
+	private Player player = new Player(name);
 	private Board board = new Board(player);
 	private List<Circle> alienCircles = new ArrayList<Circle>();
 	
@@ -45,11 +53,21 @@ public class GameController{
 		board.startGame();
 		pane.requestFocus();
 		
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(6), event -> {
 			if(!board.getEndGame() == true) {
-				moveAlienRow(); 
+				moveAlienRow();
+				score.setText("Score: " + board.getScore());
 			} else {
-				Platform.exit();
+				TextArea text = new TextArea("GAME OVER \n Score: " + board.getScore());
+				Font font = new Font("Segoe Script",20);
+				text.setFont(font);
+				text.setPrefHeight(200);
+				text.setPrefWidth(200);
+				text.setLayoutY(50);
+				text.setLayoutX(200);
+				text.setStyle("-fx-font-alignment: center");
+				pane.getChildren().add(text);
+				//Platform.exit();
 			}
 		}));
 		

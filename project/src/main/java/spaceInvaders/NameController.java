@@ -31,9 +31,9 @@ public class NameController {
     private void storeName(KeyEvent ke) throws IOException {
     	if(ke.getCode() == KeyCode.ENTER) {
     		if(!textField.getText().isEmpty()) {
-    			Player player = new Player(textField.getText());
-    			Board board = new Board(player);
     			System.out.println(textField.getText());
+    			Saver saver = new Saver();
+    			saver.writeToFile(textField.getText());
     			showGame();
     		}
     	}
