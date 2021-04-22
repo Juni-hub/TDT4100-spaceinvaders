@@ -11,7 +11,12 @@ import javafx.scene.shape.Circle;
 
 public class Board {
 	
+<<<<<<< HEAD
 	private int aliensPerRow = 20;
+=======
+	private int aliensPerRow = 10;
+	private int score;
+>>>>>>> refs/remotes/origin/Filbehandling
 	private int boardWidth = 600;
 	private int boardHeight = 400;
 	private double alienRadius = boardWidth / (2*aliensPerRow);
@@ -41,11 +46,11 @@ public class Board {
 	}
 	
 	public void drawAlienRow() {
+		this.score += 10;
 		for(int i = 0; i<aliensPerRow;i++) {
 			Circle c = new Circle();
 			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius, c);
 			alienGroup.add(alien);
-			
 		}
 	}
 	
@@ -64,7 +69,12 @@ public class Board {
 	
 	
 	public void gameOver() {
+<<<<<<< HEAD
 		System.out.println("GAME OVER!");
+=======
+		//slette gameOver fil? eller vil vi ha historien
+		//skriv highScore til fil
+>>>>>>> refs/remotes/origin/Filbehandling
 		this.endGame = true;
 	}
 	
@@ -78,5 +88,9 @@ public class Board {
 	
 	public Boolean getEndGame() {
 		return endGame;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 }

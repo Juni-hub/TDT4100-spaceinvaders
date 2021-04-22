@@ -10,9 +10,23 @@ public class Player {
 	private Board board;
 	
 	public Player(String name) {
-		this.name = name;
+		this.setName(name);
 	}
 	
+<<<<<<< HEAD
+=======
+	public void moveLeft() {
+		if (posx != -300) {
+			this.posx -=50;
+		}
+	}
+	
+	public void moveRight() {
+		if (posx != 300) {
+			this.posx +=50;
+		}
+	}
+>>>>>>> refs/remotes/origin/Filbehandling
 
 	public double getPosx() {
 		return posx;
