@@ -1,16 +1,13 @@
 package spaceInvaders;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Saver implements fileWrite{
 	private String rootPath = new File("").getAbsolutePath();
@@ -31,18 +28,18 @@ public class Saver implements fileWrite{
 	}
 	@Override
 	public List<String> readFromFile() {
-		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-			List<String> content = new ArrayList<String>();
-			while (reader.readLine() != null) {
-				content.add(reader.readLine());
-			}
+		List<String> content = new ArrayList<String>();
+		try (Scanner scanner = new Scanner (new FileReader(path))) {
+			while (scanner.hasNextLine()) {
+				content.add(scanner.nextLine());
 			return content;
+			}
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
 			System.out.println(e);
 		} catch(Exception e) {
 			System.out.println("An unknown error occured!");
 			System.out.println(e);
-		} return null;
+		} return content;
 	}
 }

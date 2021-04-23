@@ -52,7 +52,7 @@ public class GameController{
 				if(!board.getEndGame() == true) {
 					moveAlienRow(); 
 				} else {
-					TextArea text = new TextArea("GAME OVER \n Score: " + board.getScore());
+					TextArea text = new TextArea("GAME OVER \n Player: " + player.getName() + "\n Score: " + board.getScore());
 					Font font = new Font("Segoe Script",20);
 					text.setFont(font);
 					text.setPrefHeight(200);
