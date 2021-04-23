@@ -3,38 +3,32 @@ package spaceInvaders;
 public class Player {
 	
 	private int playerWidth = 50;
-	private int boardWidth = 600;
-	
-	private double posx = 0;
+	private int posx = 0;
+	private int direction;
+	private int speed = 10;
 	private String name;
 	private Board board;
 	
-	public Player(String name) {
+	public Player(String name, Board board) {
 		this.setName(name);
+		this.board = board;
+		this.board.setPlayer(this);
 	}
 	
 
-	public void moveLeft() {
-		if (posx != -300) {
-			this.posx -=50;
+	public void move() {
+		this.posx += speed*direction;
+		if(this.posx < -((board. getBoardWidth() - playerWidth) / 2)) {
+			this.posx = -(board.getBoardWidth() - playerWidth) / 2;
+		} else if(this.posx > ((board.getBoardWidth() - playerWidth) / 2)) {
+			this.posx = (board.getBoardWidth() - playerWidth) / 2;
 		}
 	}
-	
-	public void moveRight() {
-		if (posx != 300) {
-			this.posx +=50;
-		}
-	}
+		
 
-	public double getPosx() {
+	public int getPosx() {
 		return posx;
 	}
-
-
-	public void setPosx(double posx) {
-		this.posx = posx;
-	}
-
 
 	public String getName() {
 		return name;
@@ -44,8 +38,13 @@ public class Player {
 		this.name = name;
 	}
 	
-	public void setBoard(Board board) {
-		this.board = board;
+	
+	public int getDirection() {
+		return direction;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 	
 }

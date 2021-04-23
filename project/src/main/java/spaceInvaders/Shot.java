@@ -1,32 +1,28 @@
 package spaceInvaders;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
+import java.lang.Math;
 
 public class Shot {
 	
 	private double posx;
-	private double posy;
+	private float posy;
 	private Color shotColor = Color.BLACK;
 	private double shotRadius = 5;
-	private Boolean hit;
 	private Circle c;
+	private int shotSpeed = 1;
+	private Board board;
+
 	
-	public Shot(double posx, Circle c) {
+	public Shot(double posx, Circle c, Board board) {
 		this.posx = posx+300;
 		this.posy = 350;
-		this.hit = false;
 		this.c = c;
+		this.board = board;
 	}
-	
-	public void setC(Circle c) {
-		this.c = c;
-	}
+
 	
 	public Circle getC() {
 		return c;
@@ -40,12 +36,8 @@ public class Shot {
 		this.posx = posx;
 	}
 
-	public double getPosy() {
+	public float getPosy() {
 		return posy;
-	}
-
-	public void setPosy(double posy) {
-		this.posy = posy;
 	}
 		
 	public Color getShotColor() {
@@ -56,18 +48,31 @@ public class Shot {
 		return shotRadius;
 	}
 	
-	public Boolean getHit() {
-		return hit;
+	public Alien hitsAlien() {
+		if(board.getAlienGroup().size() != 0) {
+			for (Alien alien : board.getAlienGroup()) {
+				if((Math.abs(alien.getPosx()-this.posx) < 15) && this.posy-alien.getPosy()<15) {
+					if(alien.getAlive() == true) {
+					board.removeShot(this);
+					alien.setDead();
+					board.setScore(10);
+					return alien;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
-	public Boolean hitsAlien(double a_x, double a_y, double radius) {
-		double dist = Math.pow(a_x-this.posx, 2) + Math.pow(a_y-this.posy, 2);
-		if(dist < (radius + this.shotRadius)*(radius + this.shotRadius)) {
-			hit = true;
-			System.out.println(dist);
-			return true;
+	public void moveShot() {
+		this.posy -= shotSpeed;
+		if (this.posy < -10) {
+			board.removeShot(this);
 		}
-		return false;
+	}
+	
+	public int getShotSpeed() {
+		return shotSpeed;
 	}
 }
 

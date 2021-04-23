@@ -2,17 +2,11 @@ package spaceInvaders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Board {
 	
 	private int aliensPerRow = 20;
-	private int aliensPerRow = 10;
 	private int score;
 	private int boardWidth = 600;
 	private int boardHeight = 400;
@@ -22,8 +16,7 @@ public class Board {
 	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private Boolean endGame;
 	
-	public Board(Player player) {
-		this.player = player;
+	public Board() {
 		this.endGame = false;
 	}
 	
@@ -39,27 +32,27 @@ public class Board {
 		this.shotGroup = shotGroup;
 	}
 	
-	public void startGame() {
-	}
-	
 	public void drawAlienRow() {
 		this.score += 10;
 		for(int i = 0; i<aliensPerRow;i++) {
 			Circle c = new Circle();
-			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius, c);
+			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius, c, this);
 			alienGroup.add(alien);
 		}
 	}
 	
 	public void pushAliensDown() {
-		for (int i = 0; i < alienGroup.size(); i++) {
-			if (alienGroup.get(i).getPosy() == alienRadius) {
-				alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+alienRadius);
-			} else {
-			alienGroup.get(i).setPosy(alienGroup.get(i).getPosy()+(2 * alienRadius));
-			}
-			if (alienGroup.get(i).getPosy() == 300) {
-				gameOver();
+		if(this.alienGroup.size() != 0) {
+			for (Alien alien : alienGroup) {
+				if (alien.getPosy() == alienRadius) {
+					alien.setPosy(alien.getPosy()+alien.getRadius());
+				} else {
+					alien.setPosy(alien.getPosy()+(2 * alien.getRadius()));
+				}
+				if (alien.getPosy() == 300 && alien.getAlive() == true) {
+					gameOver();
+					break;
+				}
 			}
 		}
 	}
@@ -86,5 +79,23 @@ public class Board {
 	
 	public int getScore() {
 		return score;
+	}
+	
+	public void removeShot(Shot shot) {
+		if (shotGroup.contains(shot)) {
+			shotGroup.remove(shot);
+		}
+	}
+	
+	public int getBoardWidth() {
+		return boardWidth;
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	public void setScore(int moreScore) {
+		this.score += moreScore;
 	}
 }

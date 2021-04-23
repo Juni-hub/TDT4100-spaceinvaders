@@ -11,25 +11,25 @@ public class Alien {
 	private double posy;
 	private double radius;
 	private Circle c = new Circle();
-	private Color alienColor = Color.GREEN;
+	private Color alienColor;
+	private Board board;
 	
-	public Alien(double posx,double posy, double radius, Circle c) {
+	public Alien(double posx,double posy, double radius, Circle c, Board board) {
 		this.posx = posx;
 		this.posy = posy;
 		this.radius = radius;
 		this.c = c;
+		this.alienColor = Color.GREEN;
+		this.board = board;
 	}
 	
-	public void dead() {
+	public void setDead() {
 		this.alive = false;
+		this.alienColor = Color.WHITE;
 	}
 
 	public boolean getAlive() {
 		return alive;
-	}
-
-	public void setAlive(boolean alive) {
-		this.alive = alive;
 	}
 
 	public double getPosx() {
@@ -64,7 +64,6 @@ public class Alien {
 	public void setC(Circle c) {
 		this.c = c;
 	}
-	
 	
 	
 }
