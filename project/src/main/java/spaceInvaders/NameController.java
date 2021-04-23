@@ -45,6 +45,7 @@ public class NameController {
 		Scene scene = new Scene(root);
 		Stage primaryStage = AppFX.getPrimaryStage();
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
     }
 

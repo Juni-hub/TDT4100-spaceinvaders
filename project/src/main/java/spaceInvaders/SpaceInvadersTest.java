@@ -15,8 +15,8 @@ public class SpaceInvadersTest {
 	
 	@BeforeEach
 	public void setUp() {
-		player = new Player("Ola");
-		board = new Board(player);
+		board = new Board();
+		player = new Player("Ola", board);
 	}
 	
 	@Test

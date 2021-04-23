@@ -14,7 +14,6 @@ public class Shot {
 	private Circle c;
 	private int shotSpeed = 1;
 	private Board board;
-
 	
 	public Shot(double posx, Circle c, Board board) {
 		this.posx = posx+300;
@@ -51,12 +50,13 @@ public class Shot {
 	public Alien hitsAlien() {
 		if(board.getAlienGroup().size() != 0) {
 			for (Alien alien : board.getAlienGroup()) {
-				if((Math.abs(alien.getPosx()-this.posx) < 15) && this.posy-alien.getPosy()<15) {
+				double dist = (alien.getPosx() - this.posx)*(alien.getPosx() - this.posx) + (alien.getPosy() - this.posy)*(alien.getPosy() - this.posy);
+				if(dist <= (this.shotRadius + alien.getRadius())*(this.shotRadius + alien.getRadius())) {
 					if(alien.getAlive() == true) {
-					board.removeShot(this);
-					alien.setDead();
-					board.setScore(10);
-					return alien;
+						board.removeShot(this);
+						alien.setDead();
+						board.setScore(10);
+						return alien;
 					}
 				}
 			}

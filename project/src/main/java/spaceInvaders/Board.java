@@ -6,18 +6,28 @@ import javafx.scene.shape.Circle;
 
 public class Board {
 	
-	private int aliensPerRow = 20;
+	private int aliensPerRow = 10;
 	private int score;
 	private int boardWidth = 600;
 	private int boardHeight = 400;
-	private double alienRadius = boardWidth / (2*aliensPerRow);
+	private double alienRadius = boardWidth / (4*aliensPerRow);
 	private Player player;
 	private List<Alien> alienGroup = new ArrayList<Alien>();
 	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private Boolean endGame;
+	private int alienMoveCounter = 0;
+
 	
 	public Board() {
 		this.endGame = false;
+	}
+	
+	public int getAlienMoveCounter() {
+		return alienMoveCounter;
+	}
+	
+	public void increaseAlienMoveCounter() {
+		this.alienMoveCounter += 1;
 	}
 	
 	public List<Shot> getShotGroup() {
@@ -35,8 +45,12 @@ public class Board {
 	public void drawAlienRow() {
 		this.score += 10;
 		for(int i = 0; i<aliensPerRow;i++) {
+			int isRight = 0;
+			if(alienMoveCounter % 4 == 2) {
+				isRight = 1;
+			}
 			Circle c = new Circle();
-			Alien alien = new Alien(i*(2*alienRadius)+alienRadius,alienRadius, alienRadius, c, this);
+			Alien alien = new Alien(2*i*(2*alienRadius)+alienRadius+isRight*(2*alienRadius),alienRadius, alienRadius, c, this);
 			alienGroup.add(alien);
 		}
 	}
@@ -53,6 +67,22 @@ public class Board {
 					gameOver();
 					break;
 				}
+			}
+		}
+	}
+	
+	public void pushAliensRight() {
+		if(this.alienGroup.size() != 0) {
+			for (Alien alien : alienGroup) {
+				alien.setPosx(alien.getPosx()+(2*alien.getRadius()));
+			}
+		}
+	}
+	
+	public void pushAliensLeft() {
+		if(this.alienGroup.size() != 0) {
+			for (Alien alien : alienGroup) {
+				alien.setPosx(alien.getPosx()-(2*alien.getRadius()));
 			}
 		}
 	}
