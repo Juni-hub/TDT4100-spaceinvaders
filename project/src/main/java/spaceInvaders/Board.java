@@ -23,11 +23,7 @@ public class Board {
 	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private Boolean endGame;
 	private int alienMoveCounter = 0;
-	private int targetFPS = 30;
-	private int cycleDuration = 1000 / targetFPS;
 	int frameCounter = 0;
-	private int secondsPerAlienRow = 3;
-	private double alienAnimDuration = 0.1;
 	private List<Object> objectsToBeRemoved = new ArrayList<Object>();
 	private List<Object> objectsToBeMoved = new ArrayList<Object>();
 	

@@ -1,5 +1,7 @@
 package spaceInvaders;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,13 @@ public class SpaceInvadersTest {
 	@BeforeEach
 	public void setUp() {
 		board = new Board();
-		player = new Player("Ola", board);
+		player = board.getPlayer();
 	}
 	
 	@Test
 	public void testSetUpBoard() {
+		assertEquals(board.getBoardWidth(), 600);
+		assertEquals(board.getBoardHeight(), 400);
 		
 	}
 	
