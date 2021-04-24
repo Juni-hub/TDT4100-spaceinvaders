@@ -12,7 +12,7 @@ public class Shot {
 	private Color shotColor = Color.BLACK;
 	private double shotRadius = 5;
 	private Circle c;
-	private int shotSpeed = 1;
+	private int shotSpeed = 5;
 	private Board board;
 	
 	public Shot(double posx, Circle c, Board board) {
@@ -52,12 +52,9 @@ public class Shot {
 			for (Alien alien : board.getAlienGroup()) {
 				double dist = (alien.getPosx() - this.posx)*(alien.getPosx() - this.posx) + (alien.getPosy() - this.posy)*(alien.getPosy() - this.posy);
 				if(dist <= (this.shotRadius + alien.getRadius())*(this.shotRadius + alien.getRadius())) {
-					if(alien.getAlive() == true) {
-						board.removeShot(this);
-						alien.setDead();
-						board.setScore(10);
-						return alien;
-					}
+					board.removeShot(this);
+					board.setScore(10);
+					return alien;
 				}
 			}
 		}
