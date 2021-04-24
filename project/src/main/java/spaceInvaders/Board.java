@@ -26,7 +26,7 @@ public class Board {
 	private int targetFPS = 30;
 	private int cycleDuration = 1000 / targetFPS;
 	int frameCounter = 0;
-	private int secondsPerAlienRow = 2;
+	private int secondsPerAlienRow = 3;
 	private double alienAnimDuration = 0.1;
 	private List<Object> objectsToBeRemoved = new ArrayList<Object>();
 	private List<Object> objectsToBeMoved = new ArrayList<Object>();
@@ -46,7 +46,9 @@ public class Board {
 	
 	public void alienGameLoop() {
 		pushAliens();
-		drawAlienRow();
+		if(alienMoveCounter % 2 == 1) {
+			drawAlienRow();
+		}
 	}
 		
 	public void moveShots() {
@@ -57,6 +59,7 @@ public class Board {
 			if (hitAlien != null) {
 				objectsToBeRemoved.add(hitAlien.getC());
 				objectsToBeRemoved.add(shot.getC());
+				alienGroup.remove(hitAlien);
 			} 
 		}
 	}
@@ -86,7 +89,8 @@ public class Board {
 		this.score += 10;
 		for(int i = 0; i<aliensPerRow;i++) {
 			int isRight = 0;
-			if(alienMoveCounter % 4 == 2) {
+			if(alienMoveCounter % 4 == 3) {
+				// System.out.println("ISRIGHT");
 				isRight = 1;
 			}
 			Circle c = new Circle();
@@ -108,18 +112,19 @@ public class Board {
 			for (Alien alien : alienGroup) {
 				alien.setPosx(alien.getPosx()-(2*alien.getRadius()));
 			}
-		} else if (this.alienGroup.size() != 0 && getAlienMoveCounter() % 2 == 0)
+		} else if (this.alienGroup.size() != 0 && getAlienMoveCounter() % 2 == 0) {
 				for (Alien alien : alienGroup) {
 					if (alien.getPosy() == alienRadius) {
-						alien.setPosy(alien.getPosy()+alien.getRadius());
+						alien.setPosy(alien.getPosy()+2*alien.getRadius());
 					} else {
 						alien.setPosy(alien.getPosy()+(2 * alien.getRadius()));
 					}
-					if (alien.getPosy() == 300 && alien.getAlive() == true) {
+					if (alien.getPosy() >= 300 && alien.getAlive() == true) {
 						gameOver();
 						break;
 					}
 				}
+			}
 		increaseAlienMoveCounter();
 	}
 	

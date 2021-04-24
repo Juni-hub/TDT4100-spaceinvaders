@@ -141,8 +141,9 @@ public class GameController{
     
     public void checkObjectsToBeRemoved() {
     	for(int i = 0; i < board.getObjectsToBeRemoved().size(); i++) {
-    		Object o = board.getObjectsToBeRemoved().get(i);
-        	pane.getChildren().remove(o);
+    			Object o = board.getObjectsToBeRemoved().get(i);
+    			pane.getChildren().remove(o);
+    			// System.out.println("REMOVED");
     		}
     	}
     
@@ -155,5 +156,5 @@ public class GameController{
     		
     	}
     }
-    }
+}
 
