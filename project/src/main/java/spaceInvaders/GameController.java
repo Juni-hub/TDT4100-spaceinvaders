@@ -33,36 +33,36 @@ public class GameController{
 	@FXML
 	private BorderPane borderPane;
 	
-	private Saver saver = new Saver();
-	private String name = saver.readFromFile().get(saver.readFromFile().size()-1);
+	Saver saver = new Saver();
+	String name = saver.readFromFile().get(saver.readFromFile().size()-1);
 	private Board board = new Board();
-	private Player player = new Player(name, board);
+	Player player = new Player(name, board);
 	
 	@FXML
 	public void startGame() {
-		System.out.println("Starting game");
-		// System.out.println(cycleDuration);
 		pane.requestFocus();
+		board.startGame();
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
-			moveShots();
-			player.move();
-    		moveRectangle();
-			score.setText("Score: " + board.getScore());
-			if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
-				if(!board.getEndGame() == true) {
-					moveAlienRow(); 
-				} else {
-					TextArea text = new TextArea("GAME OVER \nPlayer: " + player.getName() + "\nScore: " + board.getScore());
-					Font font = new Font("Segoe Script",20);
-					text.setFont(font);
-					text.setPrefHeight(200);
-					text.setPrefWidth(200);
-					text.setLayoutY(50);
-					text.setLayoutX(200);
-					pane.getChildren().add(text);
+			if(!board.getEndGame() == true) {
+				score.setText("Score: " + board.getScore());
+				board.gameLoop();
+				checkObjectsToBeRemoved();
+				moveRectangle();
+				if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
+					board.alienGameLoop();
+					addAliens();
 				}
+			} else {
+				TextArea text = new TextArea("GAME OVER \nPlayer: " + board.getPlayer().getName() + "\nScore: " + board.getScore());
+				Font font = new Font("Segoe Script",20);
+				text.setFont(font);
+				text.setPrefHeight(200);
+				text.setPrefWidth(200);
+				text.setLayoutY(50);
+				text.setLayoutX(200);
+				pane.getChildren().add(text);
 			}
 		}
 		));
@@ -72,85 +72,63 @@ public class GameController{
 	
 	@FXML
 	public void KeyReleased(KeyEvent event) {
-		if(event.getCode() == KeyCode.LEFT && player.getDirection() == -1) {
-			player.setDirection(0);
+		if(event.getCode() == KeyCode.LEFT && board.getPlayer().getDirection() == -1) {
+			board.getPlayer().setDirection(0);
 		}
-		else if(event.getCode() == KeyCode.RIGHT && player.getDirection() == 1){
-			player.setDirection(0);
+		else if(event.getCode() == KeyCode.RIGHT && board.getPlayer().getDirection() == 1){
+			board.getPlayer().setDirection(0);
 		}
 	}
 	
    @FXML
     public void KeyPressed(KeyEvent event) {
 	   if (event.getCode() == KeyCode.LEFT) {
-    		player.setDirection(-1);
+		   board.getPlayer().setDirection(-1);
+    		
   
     	} else if (event.getCode() == KeyCode.RIGHT) {
-    		player.setDirection(1);
+    		board.getPlayer().setDirection(1);
     	
     	} else if (event.getCode() == KeyCode.SPACE) {
-    		shoot();
+    		Shot shot = board.getPlayer().shoot();
+    		pane.getChildren().add(shot.getC());
 		}
 	}
     
     @FXML
     public void moveRectangle(){
+    	rectangle.setLayoutX(player.getPosx());
     	TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.millis(cycleDuration));
-		transition.setToX(player.getPosx());
+		transition.setToX(board.getPlayer().getPosx());
 		transition.setNode(rectangle);
 		transition.play(); 
     }
     
-    @FXML
+    /*@FXML
     public void moveAlienRow() {
-    	if(board.getAlienMoveCounter() % 2 == 0) {
-    		board.pushAliensDown();
-    		for(int i = 0; i < board.getAlienGroup().size(); i++) {
-        		Alien alien = board.getAlienGroup().get(i);
-        		TranslateTransition transition = new TranslateTransition();
-        		transition.setDuration(Duration.seconds(alienAnimDuration));
-        		transition.setToY(alien.getPosy());
-        		transition.setNode(alien.getC());
-        		transition.play(); 
+    	board.pushAliens();
+    	for(int i = 0; i < board.getAlienGroup().size(); i++) {
+        	Alien alien = board.getAlienGroup().get(i);
+        	TranslateTransition transition = new TranslateTransition();
+        	transition.setDuration(Duration.seconds(alienAnimDuration));
+        	transition.setToY(alien.getPosy());
+        	transition.setNode(alien.getC());
+        	transition.play(); 
+        }
+    	board.drawAlienRow();
+    	for (int i = 0; i<board.getAliensPerRow();i++) {
+        	Alien alien = board.getAlienGroup().get(board.getAlienGroup().size()-i-1);
+            alien.getC().setRadius(alien.getRadius());
+            alien.getC().setFill(alien.getAlienColor());
+            alien.getC().setCenterX(alien.getPosx());
+            alien.getC().setCenterY(alien.getPosy());
+            pane.getChildren().add(alien.getC());
         	}
-    		board.drawAlienRow();
-    		for (int i = 0; i<board.getAliensPerRow();i++) {
-        		Alien alien = board.getAlienGroup().get(board.getAlienGroup().size()-i-1);
-            	alien.getC().setRadius(alien.getRadius());
-            	alien.getC().setFill(alien.getAlienColor());
-            	alien.getC().setCenterX(alien.getPosx());
-            	alien.getC().setCenterY(alien.getPosy());
-            	pane.getChildren().add(alien.getC());
-        	}
-    	}
-    	else if(board.getAlienMoveCounter() % 4 == 1) {
-    		board.pushAliensRight();
-    		for(int i = 0; i < board.getAlienGroup().size(); i++) {
-        		Alien alien = board.getAlienGroup().get(i);
-        		TranslateTransition transition = new TranslateTransition();
-        		transition.setDuration(Duration.seconds(alienAnimDuration));
-        		transition.setByX(2*alien.getRadius());
-        		transition.setNode(alien.getC());
-        		transition.play(); 
-        	}
-    	}
-    	else if(board.getAlienMoveCounter() % 4 == 3) {
-    		board.pushAliensLeft();
-    		for(int i = 0; i < board.getAlienGroup().size(); i++) {
-        		Alien alien = board.getAlienGroup().get(i);
-        		TranslateTransition transition = new TranslateTransition();
-        		transition.setDuration(Duration.seconds(alienAnimDuration));
-        		transition.setByX(-2*alien.getRadius());
-        		transition.setNode(alien.getC());
-        		transition.play(); 
-        	}
-    	}
-    	board.increaseAlienMoveCounter();
-    }
+    	}*/
     
-    @FXML
-    public void shoot() {
+   /* @FXML
+   public void shoot() {
     	Circle c = new Circle();
     	Shot shot = new Shot(player.getPosx(), c,board);
     	board.getShotGroup().add(shot);
@@ -159,19 +137,23 @@ public class GameController{
     	shot.getC().setRadius(shot.getShotRadius());
     	shot.getC().setFill(shot.getShotColor());
     	pane.getChildren().add(shot.getC());
-    }
+    }*/
     
-    public void moveShots() {
-    	for(int i = 0; i < board.getShotGroup().size(); i++) {
-    			Shot shot = board.getShotGroup().get(i);
-    			shot.moveShot();
-    			shot.getC().setCenterY(shot.getPosy());
-    			Alien hitAlien = shot.hitsAlien();
-    			if (hitAlien != null) {
-        			pane.getChildren().remove(shot.getC());
-        			pane.getChildren().remove(hitAlien.getC());
+    public void checkObjectsToBeRemoved() {
+    	for(int i = 0; i < board.getObjectsToBeRemoved().size(); i++) {
+    		Object o = board.getObjectsToBeRemoved().get(i);
+        	pane.getChildren().remove(o);
     		}
     	}
+    
+    public void addAliens() {
+    	for (int i = 0; i < board.getAlienGroup().size();i++) {
+    		Alien alien = board.getAlienGroup().get(i);
+    		if(!pane.getChildren().contains(alien.getC())) {
+    			pane.getChildren().add(alien.getC());
+    		}
+    		
+    	}
     }
-}
+    }
 

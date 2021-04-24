@@ -38,6 +38,7 @@ public class Alien {
 
 	public void setPosx(double posx) {
 		this.posx = posx;
+		this.c.setCenterX(posx);
 	}
 
 	public double getPosy() {
@@ -46,6 +47,7 @@ public class Alien {
 
 	public void setPosy(double posy) {
 		this.posy = posy;
+		this.c.setCenterY(posy);
 	}
 	
 	

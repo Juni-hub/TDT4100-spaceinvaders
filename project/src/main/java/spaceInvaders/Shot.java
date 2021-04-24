@@ -17,7 +17,7 @@ public class Shot {
 	
 	public Shot(double posx, Circle c, Board board) {
 		this.posx = posx+300;
-		this.posy = 350;
+		this.posy = board.getBoardHeight() - board.getPlayer().getPlayerWidth();
 		this.c = c;
 		this.board = board;
 	}
@@ -66,6 +66,7 @@ public class Shot {
 	
 	public void moveShot() {
 		this.posy -= shotSpeed;
+		this.c.setCenterY(this.posy);
 		if (this.posy < -10) {
 			board.removeShot(this);
 		}

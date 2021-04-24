@@ -1,5 +1,7 @@
 package spaceInvaders;
 
+import javafx.scene.shape.Circle;
+
 public class Player {
 	
 	private int playerWidth = 50;
@@ -25,7 +27,6 @@ public class Player {
 		}
 	}
 		
-
 	public int getPosx() {
 		return posx;
 	}
@@ -45,6 +46,21 @@ public class Player {
 	
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+	
+	public int getPlayerWidth() {
+		return playerWidth;
+	}
+	
+	public Shot shoot() {
+		Circle c = new Circle();
+    	Shot shot = new Shot(posx, c,board);
+    	board.getShotGroup().add(shot);
+    	shot.getC().setCenterX(shot.getPosx());
+    	shot.getC().setCenterY(shot.getPosy());
+    	shot.getC().setRadius(shot.getShotRadius());
+    	shot.getC().setFill(shot.getShotColor());
+    	return shot;
 	}
 	
 }

@@ -2,7 +2,14 @@ package spaceInvaders;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.TextArea;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public class Board {
 	
@@ -16,11 +23,44 @@ public class Board {
 	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private Boolean endGame;
 	private int alienMoveCounter = 0;
-
+	private int targetFPS = 30;
+	private int cycleDuration = 1000 / targetFPS;
+	int frameCounter = 0;
+	private int secondsPerAlienRow = 2;
+	private double alienAnimDuration = 0.1;
+	private List<Object> objectsToBeRemoved = new ArrayList<Object>();
+	private List<Object> objectsToBeMoved = new ArrayList<Object>();
 	
-	public Board() {
-		this.endGame = false;
+	public void startGame() {
+		Saver saver = new Saver();
+		String name = saver.readFromFile().get(saver.readFromFile().size()-1);
+		Player player = new Player(name, this);
+		endGame = false;
 	}
+	
+	public void gameLoop() {
+		objectsToBeRemoved.clear();
+		player.move();
+		moveShots();
+	}
+	
+	public void alienGameLoop() {
+		pushAliens();
+		drawAlienRow();
+	}
+		
+	public void moveShots() {
+		for(int i = 0; i < shotGroup.size(); i++) {
+			Shot shot = shotGroup.get(i);
+			shot.moveShot();
+			Alien hitAlien = shot.hitsAlien();
+			if (hitAlien != null) {
+				objectsToBeRemoved.add(hitAlien.getC());
+				objectsToBeRemoved.add(shot.getC());
+			} 
+		}
+	}
+		
 	
 	public int getAlienMoveCounter() {
 		return alienMoveCounter;
@@ -51,40 +91,36 @@ public class Board {
 			}
 			Circle c = new Circle();
 			Alien alien = new Alien(2*i*(2*alienRadius)+alienRadius+isRight*(2*alienRadius),alienRadius, alienRadius, c, this);
-			alienGroup.add(alien);
+			alien.getC().setRadius(alien.getRadius());
+            alien.getC().setFill(alien.getAlienColor());
+            alien.getC().setCenterX(alien.getPosx());
+            alien.getC().setCenterY(alien.getPosy());
+            alienGroup.add(alien);
 		}
 	}
 	
-	public void pushAliensDown() {
-		if(this.alienGroup.size() != 0) {
-			for (Alien alien : alienGroup) {
-				if (alien.getPosy() == alienRadius) {
-					alien.setPosy(alien.getPosy()+alien.getRadius());
-				} else {
-					alien.setPosy(alien.getPosy()+(2 * alien.getRadius()));
-				}
-				if (alien.getPosy() == 300 && alien.getAlive() == true) {
-					gameOver();
-					break;
-				}
-			}
-		}
-	}
-	
-	public void pushAliensRight() {
-		if(this.alienGroup.size() != 0) {
+	public void pushAliens() {
+		if(this.alienGroup.size() != 0 && getAlienMoveCounter() % 4 == 1) {
 			for (Alien alien : alienGroup) {
 				alien.setPosx(alien.getPosx()+(2*alien.getRadius()));
 			}
-		}
-	}
-	
-	public void pushAliensLeft() {
-		if(this.alienGroup.size() != 0) {
+		} else if (this.alienGroup.size() != 0 && getAlienMoveCounter() % 4 == 3) {
 			for (Alien alien : alienGroup) {
 				alien.setPosx(alien.getPosx()-(2*alien.getRadius()));
 			}
-		}
+		} else if (this.alienGroup.size() != 0 && getAlienMoveCounter() % 2 == 0)
+				for (Alien alien : alienGroup) {
+					if (alien.getPosy() == alienRadius) {
+						alien.setPosy(alien.getPosy()+alien.getRadius());
+					} else {
+						alien.setPosy(alien.getPosy()+(2 * alien.getRadius()));
+					}
+					if (alien.getPosy() == 300 && alien.getAlive() == true) {
+						gameOver();
+						break;
+					}
+				}
+		increaseAlienMoveCounter();
 	}
 	
 	
@@ -127,5 +163,21 @@ public class Board {
 	
 	public void setScore(int moreScore) {
 		this.score += moreScore;
+	}
+	
+	public int getBoardHeight() {
+		return boardHeight;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public List<Object> getObjectsToBeRemoved() {
+		return objectsToBeRemoved;
+	}
+	
+	public List<Object> getObjectsToBeMoved() {
+		return objectsToBeMoved;
 	}
 }
