@@ -119,7 +119,7 @@ public class Board {
 					} else {
 						alien.setPosy(alien.getPosy()+(2 * alien.getRadius()));
 					}
-					if (alien.getPosy() >= 300 && alien.getAlive() == true) {
+					if (alien.getPosy() >= 300) {
 						gameOver();
 						break;
 					}
