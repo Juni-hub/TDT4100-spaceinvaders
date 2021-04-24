@@ -6,7 +6,7 @@ public class Player {
 	
 	private int playerWidth = 50;
 	private int posx = 0;
-	private int direction;
+	private int direction = 0;
 	private int speed = 10;
 	private String name;
 	private Board board;

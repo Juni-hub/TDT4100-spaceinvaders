@@ -66,6 +66,4 @@ public class Alien {
 	public void setC(Circle c) {
 		this.c = c;
 	}
-	
-	
 }

@@ -1,5 +1,7 @@
 package spaceInvaders;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,13 @@ public class SpaceInvadersTest {
 	@Test
 	public void movePlayer() {
 		// sjekke at kommer på riktig sted og hva som skjer når den går utenfor banen
+		assertEquals(player.getPosx(), 0);
+		assertEquals(player.getDirection(), 0);
+		player.setDirection(1);
+		for(int i=0; i < 1000; i++) {
+			assertEquals(player.getPosx(), Math.min(i*10, board.getBoardWidth()/2));
+			player.move();
+		}
 	}
 	
 	@Test
