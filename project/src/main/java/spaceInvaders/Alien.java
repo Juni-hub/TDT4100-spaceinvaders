@@ -6,7 +6,6 @@ import spaceInvaders.Board;
 
 public class Alien {
 	
-	private boolean alive = true;
 	private double posx;
 	private double posy;
 	private double radius;
@@ -21,15 +20,6 @@ public class Alien {
 		this.c = c;
 		this.alienColor = Color.GREEN;
 		this.board = board;
-	}
-	
-	public void setDead() {
-		this.alive = false;
-		this.alienColor = Color.WHITE;
-	}
-
-	public boolean getAlive() {
-		return alive;
 	}
 
 	public double getPosx() {
