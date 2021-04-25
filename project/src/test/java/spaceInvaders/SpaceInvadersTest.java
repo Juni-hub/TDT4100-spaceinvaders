@@ -76,6 +76,16 @@ public class SpaceInvadersTest {
 		assertEquals(newShotPosY, shot.getPosy());
 	}
 	
+	@Test
+	public void shotHitsAlien() {
+		
+	}
+	
+	@Test
+	public void alienMoves() {
+		
+	}
+	
 	
 	@Test
 	public void testSave() {

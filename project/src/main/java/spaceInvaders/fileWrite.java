@@ -6,4 +6,5 @@ public interface fileWrite {
 	public void writeToFile(String string);
 	
 	public List<String> readFromFile();
+	public String getHighScore();
 }

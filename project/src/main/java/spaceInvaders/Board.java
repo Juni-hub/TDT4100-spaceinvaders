@@ -3,21 +3,11 @@ package spaceInvaders;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.HLineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.text.Font;
-import javafx.util.Duration;
+
 
 public class Board {
 	
@@ -33,12 +23,13 @@ public class Board {
 	private int alienMoveCounter = 0;
 	int frameCounter = 0;
 	private List<Object> objectsToBeRemoved = new ArrayList<Object>();
-	private List<Object> objectsToBeMoved = new ArrayList<Object>();
+	private Saver saver;
+	private String highScoreString;
 	
 	public void startGame() {
-		Saver saver = new Saver();
+		saver = new Saver();
 		String name = saver.readFromFile().get(saver.readFromFile().size()-1);
-		Player player = new Player(name, this);
+		player = new Player(name, this);
 		this.endGame = false;
 	}
 	
@@ -61,7 +52,7 @@ public class Board {
 			shot.moveShot();
 			Alien hitAlien = shot.hitsAlien();
 			if (hitAlien != null) {
-				objectsToBeRemoved.add(hitAlien.getC());
+				//objectsToBeRemoved.add(hitAlien.getC());
 				objectsToBeRemoved.add(shot.getC());
 				alienGroup.remove(hitAlien);
 			} 
@@ -99,12 +90,20 @@ public class Board {
 			}
 			Circle c = new Circle();
 			Alien alien = new Alien(2*i*(2*alienRadius)+alienRadius+isRight*(2*alienRadius),alienRadius, alienRadius, c, this);
-			alien.getC().setRadius(alien.getRadius());
-            alien.getC().setFill(alien.getAlienColor());
-            alien.getC().setCenterX(alien.getPosx());
-            alien.getC().setCenterY(alien.getPosy());
+			//alien.getC().setRadius(alien.getRadius());
+            //alien.getC().setFill(alien.getAlienColor());
+            //alien.getC().setCenterX(alien.getPosx());
+            //alien.getC().setCenterY(alien.getPosy());
             alienGroup.add(alien);
 		}
+	}
+	
+	public String getHighScoreString() {
+		return highScoreString;
+	}
+	
+	public void setHighScoreString(String highScoreString) {
+		this.highScoreString = highScoreString;
 	}
 	
 	public void pushAliens() {
@@ -137,6 +136,8 @@ public class Board {
 		System.out.println("GAME OVER!");
 		//slette gameOver fil? eller vil vi ha historien
 		//skriv highScore til fil
+		saver.writeToFile(";" + this.score + "\n");
+		setHighScoreString(saver.getHighScore());
 		this.endGame = true;
 	}
 	
@@ -185,10 +186,7 @@ public class Board {
 	public List<Object> getObjectsToBeRemoved() {
 		return objectsToBeRemoved;
 	}
-	
-	public List<Object> getObjectsToBeMoved() {
-		return objectsToBeMoved;
-	}
+
 	
 	public Arc drawArc(double centerX, double centerY, double radius, double length) {
 		Arc arc = new Arc();
