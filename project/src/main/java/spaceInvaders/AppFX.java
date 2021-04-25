@@ -30,7 +30,6 @@ public class AppFX extends Application {
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
 	}
 	
 }

@@ -15,8 +15,10 @@ public class Saver implements fileWrite{
 	
 	@Override
 	public void writeToFile(String string) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
 			writer.write(string);
+			System.out.println("Wrote: " + string);
+			writer.close();
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
 			System.out.println(e);
@@ -41,5 +43,22 @@ public class Saver implements fileWrite{
 			System.out.println("An unknown error occured!");
 			System.out.println(e);
 		} return content;
+	}
+	
+	@Override
+	public String getHighScore(){
+		List<String> content = readFromFile();
+		String winner = "";
+		int currentMax = 0;
+		for(int i=0; i<content.size(); i++) {
+			String[] nameScore = content.get(i).split(";");
+			String name = nameScore[0];
+			int score = Integer.valueOf(nameScore[1]);
+			if(score > currentMax) {
+				winner = name;
+				currentMax = score;
+			}
+		}
+		return ("Player: " + winner + "\nScore: " + currentMax);
 	}
 }

@@ -7,7 +7,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -64,10 +66,17 @@ public class GameController{
 				board.updateArc(shotTime, Math.min(360.0, 360.0*framePercent));
 				if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
 					board.alienGameLoop();
-					addAliens();
+					//addAliens();
+				}
+				for(Alien alien : board.getAlienGroup()) {
+					Circle c = new Circle();
+					c.setRadius(alien.getRadius());
+		            c.setFill(Color.GREEN);
+		            c.setCenterX(alien.getPosx());
+		            c.setCenterY(alien.getPosy());
 				}
 			} else {
-				TextArea text = new TextArea("GAME OVER \nPlayer: " + board.getPlayer().getName() + "\nScore: " + board.getScore());
+				TextArea text = new TextArea("GAME OVER \nPlayer: " + board.getPlayer().getName() + "\nScore: " + board.getScore() + "\nHIGH SCORE\n" + board.getHighScoreString());
 				Font font = new Font("Segoe Script",20);
 				text.setFont(font);
 				text.setPrefHeight(200);
@@ -129,13 +138,13 @@ public class GameController{
     		}
     	}
     
-    public void addAliens() {
+    /*public void addAliens() {
     	for (int i = 0; i < board.getAlienGroup().size();i++) {
     		Alien alien = board.getAlienGroup().get(i);
     		if(!pane.getChildren().contains(alien.getC())) {
     			pane.getChildren().add(alien.getC());
     		}
     	}
-    }
+    }*/
 }
 

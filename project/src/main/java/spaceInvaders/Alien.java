@@ -9,17 +9,15 @@ public class Alien {
 	private double posx;
 	private double posy;
 	private double radius;
-	private Circle c = new Circle();
+	//private Circle c = new Circle();
 	private Color alienColor;
-	private Board board;
 	
 	public Alien(double posx,double posy, double radius, Circle c, Board board) {
 		this.posx = posx;
 		this.posy = posy;
 		this.radius = radius;
-		this.c = c;
+		//this.c = c;
 		this.alienColor = Color.GREEN;
-		this.board = board;
 	}
 
 	public double getPosx() {
@@ -28,7 +26,7 @@ public class Alien {
 
 	public void setPosx(double posx) {
 		this.posx = posx;
-		this.c.setCenterX(posx);
+		//this.c.setCenterX(posx);
 	}
 
 	public double getPosy() {
@@ -37,7 +35,7 @@ public class Alien {
 
 	public void setPosy(double posy) {
 		this.posy = posy;
-		this.c.setCenterY(posy);
+		//this.c.setCenterY(posy);
 	}
 	
 	
@@ -49,6 +47,7 @@ public class Alien {
 		return radius;
 	}
 	
+	/*
 	public Circle getC() {
 		return c;
 	}
@@ -56,4 +55,5 @@ public class Alien {
 	public void setC(Circle c) {
 		this.c = c;
 	}
+	*/
 }
