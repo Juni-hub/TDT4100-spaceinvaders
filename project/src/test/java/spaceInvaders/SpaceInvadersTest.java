@@ -23,20 +23,59 @@ public class SpaceInvadersTest {
 	
 	@Test
 	public void testSetUpBoard() {
-		
+		assertEquals(null, board.getEndGame());
+		board.startGame();
+		assertEquals(false, board.getEndGame());
+		board.gameOver();
+		assertEquals(true, board.getEndGame());
 	}
 	
 	@Test
-	public void movePlayer() {
+	public void movePlayerRight() {
 		// sjekke at kommer på riktig sted og hva som skjer når den går utenfor banen
-		assertEquals(player.getPosx(), 0);
-		assertEquals(player.getDirection(), 0);
+		assertEquals(0, player.getPosx());
+		assertEquals(0, player.getDirection());
 		player.setDirection(1);
 		for(int i=0; i < 1000; i++) {
-			assertEquals(player.getPosx(), Math.min(i*10, board.getBoardWidth()/2));
+			assertEquals(Math.min(i*10, board.getBoardWidth()/2 - player.getPlayerWidth()/2), player.getPosx());
 			player.move();
 		}
 	}
+	
+	@Test
+	public void movePlayerLeft() {
+		// sjekke at kommer på riktig sted og hva som skjer når den går utenfor banen
+		assertEquals(0, player.getPosx());
+		assertEquals(0, player.getDirection());
+		player.setDirection(-1);
+		for(int i=0; i < 1000; i++) {
+			assertEquals(Math.max(-i*10, -(board.getBoardWidth()/2 - player.getPlayerWidth()/2)), player.getPosx());
+			player.move();
+		}
+	}
+	
+	@Test
+	public void playerShoot() {
+		player.setDirection(1);
+		for(int i=0; i<10; i++) {
+			Shot shot = player.shoot();
+			assertEquals(player.getPosx()+300, shot.getPosx());
+			// Player operates with -300 to 300 in x direction, while shot uses 0 to 600
+			assertEquals(i+1, board.getShotGroup().size());
+			player.move();
+		}
+	}
+	
+	@Test
+	public void shotMoves() {
+		Shot shot = player.shoot();
+		assertEquals(player.getPosx()+300, shot.getPosx());
+		assertEquals(board.getBoardHeight()-player.getPlayerWidth(), shot.getPosy());
+		double newShotPosY = shot.getPosy() - 5.0;
+		shot.moveShot();
+		assertEquals(newShotPosY, shot.getPosy());
+	}
+	
 	
 	@Test
 	public void testSave() {

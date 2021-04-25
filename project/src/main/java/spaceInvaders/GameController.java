@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -23,6 +24,7 @@ public class GameController{
 	private int secondsPerAlienRow = 2;
 	private int framesBetweenShots;
 	private int framesSinceLastShot;
+	private double framePercent;
 
 	@FXML
     private Pane pane;
@@ -43,11 +45,13 @@ public class GameController{
 		pane.requestFocus();
 		board.startGame();
 		
+		Arc shotTime = board.drawArc(25, 375, 20, 0);
+		
+		pane.getChildren().add(shotTime);
+		
 		framesBetweenShots = (int) Math.ceil(board.getPlayer().getShotDelaySeconds() * targetFPS);
 		framesSinceLastShot = framesBetweenShots;
-		
-		System.out.println(framesBetweenShots);
-		
+				
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
 			framesSinceLastShot += 1;
@@ -56,6 +60,8 @@ public class GameController{
 				board.gameLoop();
 				checkObjectsToBeRemoved();
 				moveRectangle();
+				framePercent = ((double)framesSinceLastShot/framesBetweenShots);
+				board.updateArc(shotTime, Math.min(360.0, 360.0*framePercent));
 				if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
 					board.alienGameLoop();
 					addAliens();
