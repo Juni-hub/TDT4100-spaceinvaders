@@ -37,8 +37,8 @@ public class NameController {
     	if(ke.getCode() == KeyCode.ENTER) {
     		if(!textField.getText().isEmpty()) {
     			System.out.println(textField.getText());
-    			Saver saver = new Saver();
-    			if (saver.writeNameToFile("\n" + textField.getText()) == false) {
+    			Saver saver = new Saver("/src/main/java/spaceInvaders/gameScore");
+    			if (saver.writeNameToFile(textField.getText()) == false) {
     				TextArea text = new TextArea("Ugyldig navn");
     				text.setPrefHeight(50);
     				text.setPrefWidth(200);

@@ -16,7 +16,7 @@ public class Board {
 	private List<Shot> shotGroup = new ArrayList<Shot>();
 	private int alienMoveCounter = 0;
 	private List<Object> objectsToBeRemoved = new ArrayList<Object>();
-	private Saver saver = new Saver();
+	private Saver saver = new Saver("/src/main/java/spaceInvaders/gameScore");
 	private String gameOverString;
 	
 	public Board() {
@@ -102,10 +102,12 @@ public class Board {
 	
 	
 	public void gameOver() {
-		System.out.println("GAME OVER!");
-		saver.writeScoreToFile(";" + this.score + "");
-		this.gameOverString = "GAME OVER \nPlayer: " + player.getName() + "\nScore: " + this.score + "\n\n" + saver.getHighScore();
-		this.endGame = true;
+		if(!this.endGame) {
+			System.out.println("GAME OVER!");
+			saver.writeScoreToFile("" + this.score);
+			this.gameOverString = "GAME OVER \nPlayer: " + player.getName() + "\nScore: " + this.score + "\n\n" + saver.getHighScore();
+			this.endGame = true;
+		}
 	}
 	
 	public String getGameOverString() {
@@ -151,11 +153,4 @@ public class Board {
 	public Boolean getStartGame() {
 		return startGame;
 	}
-
-
-
-	
-	/*public void updateArc(Arc arc, double length) {
-		arc.setLength(length);
-	}*/
 }

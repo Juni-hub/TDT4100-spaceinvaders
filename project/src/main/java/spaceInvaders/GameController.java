@@ -6,7 +6,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -22,11 +24,11 @@ public class GameController{
 		
 	private int targetFPS = 30;
 	private int cycleDuration = 1000 / targetFPS;
-	int frameCounter = 0;
+	private int frameCounter = 0;
 	private int secondsPerAlienRow = 2;
-	/*private int framesBetweenShots;
-	private int framesSinceLastShot;
-	private double framePercent;*/
+	
+	private Color alienColor = Color.GREEN;
+	private Color shotColor = Color.BLACK;
 
 	@FXML
     private Pane pane;
@@ -47,24 +49,27 @@ public class GameController{
 		board.setStartGame(true);
 		pane.requestFocus();
 		
-		/*Arc shotTime = board.drawArc(25, 375, 20, 0);
-		pane.getChildren().add(shotTime);*/
+		Arc shotTime = new Arc();
+		shotTime.setCenterX(25);
+		shotTime.setCenterY(375);
+		shotTime.setRadiusX(15);
+		shotTime.setRadiusY(15);
+		shotTime.setStartAngle(90);
+		shotTime.setLength(0);
+		shotTime.setType(ArcType.ROUND);
+		pane.getChildren().add(shotTime);
 
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
-			
-			//framesSinceLastShot += 1;
-			
+						
 			if(!board.getEndGame() == true) {
 				score.setText("Score: " + board.getScore());
-				
+							
 				board.gameLoop();
 				moveRectangle();
 				moveShots();
+				shotTime.setLength(Math.min(360.0, 360.0*((double)board.getPlayer().getTimeSinceLastShot()/board.getPlayer().getTimeBeetweenShots())));
 				checkObjectsToBeRemoved();
-				
-				/*framePercent = ((double)framesSinceLastShot/framesBetweenShots);
-				board.updateArc(shotTime, Math.min(360.0, 360.0*framePercent));*/
 				
 				if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
 					board.alienGameLoop();
@@ -82,6 +87,9 @@ public class GameController{
 		));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
+		if(board.getEndGame()) {
+			timeline.stop();
+		}
 		}
 	}
 	
@@ -109,7 +117,7 @@ public class GameController{
     			if (shot != null) {
     				Circle c = new Circle();
     				c.setRadius(shot.getRadius());
-    				c.setFill(shot.getShotColor());
+    				c.setFill(shotColor);
     				c.setCenterX(shot.getPosx());
     				c.setCenterY(shot.getPosy());
     				shotGroup.put(shot, c);
@@ -150,7 +158,7 @@ public class GameController{
     		} else {
     			Circle c = new Circle();
     			c.setRadius(alien.getRadius());
-                c.setFill(alien.getAlienColor());
+                c.setFill(alienColor);
                 c.setCenterX(alien.getPosx());
                 c.setCenterY(alien.getPosy());
                 pane.getChildren().add(c);
@@ -162,8 +170,8 @@ public class GameController{
     public void moveShots() {
     	for(Shot shot : board.getShotGroup()) {
     		shotGroup.get(shot).setCenterY(shot.getPosy());
-    		}
     	}
     }
+}
     
 
