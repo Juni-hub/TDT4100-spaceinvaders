@@ -3,10 +3,7 @@ package spaceInvaders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +65,7 @@ public class SpaceInvadersTest {
 	}
 	
 	@Test
-	public void shotHitsAlien() {
+	public void shotHitsAlien1() {
 		Alien alien = new Alien(50, 50, 25);
 		board.getAlienGroup().add(alien);
 		Shot shot = new Shot(50,board);
@@ -81,6 +78,40 @@ public class SpaceInvadersTest {
 			}
 		}
 	}
+	
+	@Test
+	public void shotHitsAlien2() {
+		Alien alien = new Alien(50, 50, 25);
+		board.getAlienGroup().add(alien);
+		Shot shot = new Shot(80,board);
+		for(int i=0; i<100; i++) {
+			if(shot.getPosy() == alien.getPosx()) {
+				assertEquals(alien, shot.hitsAlien());
+			}
+			else {
+				assertEquals(null,shot.hitsAlien());
+			}
+		}
+	}
+	
+	@Test
+	public void shotHitsAlien3() {
+		Alien alien = new Alien(50, 300, 25);
+		Alien alien2 = new Alien(50, 250, 25);
+		board.getAlienGroup().add(alien);
+		Shot shot = new Shot(80,board);
+		double distSquared;
+		for(int i=0; i<10; i++) {
+			distSquared = (shot.getPosx() - alien.getPosx())*(shot.getPosx() - alien.getPosx()) + (shot.getPosy() - alien.getPosy())*(shot.getPosy() - alien.getPosy());
+			if(distSquared <= (shot.getRadius() + alien.getRadius())*(shot.getRadius()+alien.getRadius())) {
+				assertEquals(alien, shot.hitsAlien());
+			}
+			else {
+				assertEquals(null, shot.hitsAlien());
+			}
+		}
+	}
+	
 	
 	@Test
 	public void alienMoves() {

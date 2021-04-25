@@ -43,7 +43,7 @@ public class Board {
 		}
 	}
 		
-	public void moveShots() {
+	private void moveShots() {
 		for(int i = 0; i < shotGroup.size(); i++) {
 			Shot shot = shotGroup.get(i);
 			shot.moveShot();
@@ -58,7 +58,7 @@ public class Board {
 		}
 	}
 	
-	public void drawAlienRow() {
+	private void drawAlienRow() {
 		int alienRadius = boardWidth / (4*aliensPerRow);
 		for(int i = 0; i<aliensPerRow;i++) {
 			int isRight = 0;
@@ -101,7 +101,7 @@ public class Board {
 	}
 	
 	
-	public void gameOver() {
+	private void gameOver() {
 		if(!this.endGame) {
 			System.out.println("GAME OVER!");
 			saver.writeScoreToFile("" + this.score);

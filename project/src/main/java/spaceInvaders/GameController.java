@@ -87,9 +87,6 @@ public class GameController{
 		));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
-		if(board.getEndGame()) {
-			timeline.stop();
-		}
 		}
 	}
 	

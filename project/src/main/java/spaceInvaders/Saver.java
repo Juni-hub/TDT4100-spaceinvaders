@@ -14,7 +14,6 @@ public class Saver implements fileWrite{
 	private String path;
 	
 	public Saver(String path) {
-		// TODO Auto-generated constructor stub
 		this.path = rootPath + path;
 	}
 	
@@ -68,7 +67,6 @@ public class Saver implements fileWrite{
 			while (scanner.hasNextLine()) {
 				content.add(scanner.nextLine());
 			}
-			return content;
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
 			System.out.println(e);
