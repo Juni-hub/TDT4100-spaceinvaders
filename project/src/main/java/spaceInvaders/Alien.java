@@ -1,17 +1,17 @@
 package spaceInvaders;
 
-import javafx.scene.paint.Color;
 
 public class Alien {
 	
 	private double posx;
 	private double posy;
 	private double radius;
-	private Color alienColor = Color.GREEN;
 	
 	public Alien(double posx,double posy, double radius) {
-		this.posx = posx;
-		this.posy = posy;
+		// this.posx = posx;
+		// this.posy = posy;
+		setPosx(posx);
+		setPosy(posy);
 		this.radius = radius;
 	}
 
@@ -23,19 +23,21 @@ public class Alien {
 		return posy;
 	}
 	
-	public Color getAlienColor() {
-		return alienColor;
-	}
-	
 	public double getRadius() {
 		return radius;
 	}
 	
 	public void setPosx(double posx) {
+		if(posx > 600 - radius || posx < radius) {
+			throw new IllegalStateException("Out of bounds");
+		}
 		this.posx = posx;
 	}
 	
 	public void setPosy(double posy) {
+		if(posy > 400 - radius || posy < radius) {
+			throw new IllegalStateException("Out of bounds");
+		}
 		this.posy = posy;
 	}
 	

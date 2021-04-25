@@ -15,20 +15,13 @@ public class SpaceInvadersTest {
 	private Player player;
 	private Board board;
 	
+	
 	@BeforeEach
 	public void setUp() {
 		board = new Board();
 		player = new Player("Ola", board);
 	}
 	
-	@Test
-	public void testSetUpBoard() {
-		assertEquals(null, board.getEndGame());
-		board.startGame();
-		assertEquals(false, board.getEndGame());
-		board.gameOver();
-		assertEquals(true, board.getEndGame());
-	}
 	
 	@Test
 	public void movePlayerRight() {
@@ -55,54 +48,124 @@ public class SpaceInvadersTest {
 	}
 	
 	@Test
-	public void playerShoot() {
-		player.setDirection(1);
-		for(int i=0; i<10; i++) {
-			Shot shot = player.shoot();
-			assertEquals(player.getPosx()+300, shot.getPosx());
-			// Player operates with -300 to 300 in x direction, while shot uses 0 to 600
-			assertEquals(i+1, board.getShotGroup().size());
-			player.move();
+	public void playerShoots() {
+		for(int j=0; j < 5; j++) {
+			for(int i=0; i < 12; i++) {
+				assertEquals(null, player.shoot());
+				player.addTimeSinceLastShot();
+			}
+			assertEquals(Shot.class, player.shoot().getClass());
 		}
 	}
 	
 	@Test
-	public void shotMoves() {
-		Shot shot = player.shoot();
-		assertEquals(player.getPosx()+300, shot.getPosx());
-		assertEquals(board.getBoardHeight()-player.getPlayerWidth(), shot.getPosy());
-		double newShotPosY = shot.getPosy() - 5.0;
-		shot.moveShot();
-		assertEquals(newShotPosY, shot.getPosy());
+	public void moveShots() {
+		Shot shot = new Shot(100, board);
+		for(int i=0; i<10; i++) {
+			assertEquals(400-player.getPlayerWidth()-i*shot.getShotSpeed(), shot.getPosy());
+			shot.moveShot();
+		}
 	}
 	
 	@Test
 	public void shotHitsAlien() {
-		
+		Alien alien = new Alien(50, 50, 25);
+		board.getAlienGroup().add(alien);
+		Shot shot = new Shot(50,board);
+		for(int i=0; i<100; i++) {
+			if(Math.abs(shot.getPosx()-alien.getPosx()) < alien.getRadius() + shot.getRadius()) {
+				assertEquals(alien, shot.hitsAlien());
+			}
+			else {
+				assertEquals(null,shot.hitsAlien());
+			}
+		}
 	}
 	
 	@Test
 	public void alienMoves() {
-		
+		Alien alien1 = new Alien(25, 25, 25);
+		double lastPosX = 25;
+		double lastPosY = 25;
+		double pushDist = 2 * alien1.getRadius();
+		board.getAlienGroup().add(alien1);
+		board.pushAliens(); // Pushes down
+		assertEquals(25, alien1.getPosx());
+		assertEquals(lastPosY + pushDist, alien1.getPosy());
+		lastPosY = alien1.getPosy();
+		board.pushAliens(); // Pushes right
+		assertEquals(lastPosX + pushDist, alien1.getPosx());
+		assertEquals(lastPosY, alien1.getPosy());
+		lastPosX = alien1.getPosx();
+		board.pushAliens(); // Pushes down
+		assertEquals(lastPosX, alien1.getPosx());
+		assertEquals(lastPosY + pushDist, alien1.getPosy());
+		lastPosY = alien1.getPosy();
+		board.pushAliens(); // Pushes left
+		assertEquals(lastPosX - pushDist, alien1.getPosx());
+		assertEquals(lastPosY, alien1.getPosy());
+	}
+	
+	@Test
+	public void alienOutOfBounds() {
+		Alien alien = new Alien(25,25,25);
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			alien.setPosx(600);
+		});
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			alien.setPosy(400);
+		});
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			alien.setPosx(0);
+		});
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			alien.setPosy(0);
+		});	
+	}
+	
+	@Test
+	public void testWriteNameToSave() {
+		String rootPath = new File("").getAbsolutePath();
+		String path = rootPath + "/src/test/java/spaceInvaders/gameScoreTest";
+		File newTestSaveFile = new File(path);
+		Saver saver = new Saver("/src/test/java/spaceInvaders/gameScoreTest");
+		assertEquals(true, saver.writeNameToFile("Ola"));
+		assertEquals(true, saver.writeNameToFile("Ola Halvorsen"));
+		assertEquals(false, saver.writeNameToFile("Ola12"));
+		assertEquals(false, saver.writeNameToFile("Ola-Halvorsen"));
+		newTestSaveFile.delete();
+	}
+	
+	@Test
+	public void testWriteNameAndScore() {
+		String rootPath = new File("").getAbsolutePath();
+		String path = rootPath + "/src/test/java/spaceInvaders/gameScoreTest";
+		File newTestSaveFile = new File(path);
+		Saver saver = new Saver("/src/test/java/spaceInvaders/gameScoreTest");
+		assertEquals(true, saver.writeNameToFile("Ola"));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			saver.writeScoreToFile("Ola");
+		});
+		assertEquals(true, saver.writeScoreToFile("120"));
+		newTestSaveFile.delete();
 	}
 	
 	
 	@Test
-	public void testSave() {
+	public void testHighScore() {
 		String rootPath = new File("").getAbsolutePath();
-		String path = rootPath + "/src/main/java/spaceInvaders/gameScore";
-		Saver saver = new Saver();
-		saver.writeToFile("Hei");
-		List<String> testList = new ArrayList<String>();
-		testList.add("Hei");
-		Assertions.assertTrue(saver.readFromFile().equals(testList));
-	}
-	
-	@AfterAll
-	static void tearDown() {
-		String rootPath = new File("").getAbsolutePath();
-		String path = rootPath + "/src/main/java/spaceInvaders/gameScore";
+		String path = rootPath + "/src/test/java/spaceInvaders/gameScoreTest";
 		File newTestSaveFile = new File(path);
+		Saver saver = new Saver("/src/test/java/spaceInvaders/gameScoreTest");
+		saver.writeNameToFile("Ola");
+		saver.writeScoreToFile("100");
+		saver.writeNameToFile("Per");
+		saver.writeScoreToFile("2000");
+		saver.writeNameToFile("Jan");
+		saver.writeScoreToFile("30");
+		saver.writeNameToFile("Ole");
+		saver.writeScoreToFile("400");
+		assertEquals("HIGHEST SCORE OF ALL TIME \nPlayer: " + "Per" + "\nScore: " + "2000", saver.getHighScore());
 		newTestSaveFile.delete();
 	}
 	

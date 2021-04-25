@@ -11,7 +11,12 @@ import java.util.Scanner;
 
 public class Saver implements fileWrite{
 	private String rootPath = new File("").getAbsolutePath();
-	private String path = rootPath + "/src/main/java/spaceInvaders/gameScore";
+	private String path;
+	
+	public Saver(String path) {
+		// TODO Auto-generated constructor stub
+		this.path = rootPath + path;
+	}
 	
 	@Override
 	public boolean writeNameToFile(String string) {
@@ -22,7 +27,7 @@ public class Saver implements fileWrite{
 			}
 		}
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-			writer.write(string);
+			writer.write(string + ";");
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
@@ -35,10 +40,17 @@ public class Saver implements fileWrite{
 	}
 	
 	@Override
-	public void writeScoreToFile(String string) {
+	public boolean writeScoreToFile(String string) {
+		try {
+			int score = Integer.valueOf(string);
+		} catch (Exception e){
+			System.out.println(e);
+			throw new IllegalArgumentException("Not a number");
+		}
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-			writer.write(string);
+			writer.write (string + "\n");
 			writer.close();
+			return true;
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
 			System.out.println(e);
@@ -46,7 +58,7 @@ public class Saver implements fileWrite{
 			System.out.println("An unknown error occured!");
 			System.out.println(e);
 		}
-		
+		return false;
 	}
 	
 	@Override
@@ -73,13 +85,18 @@ public class Saver implements fileWrite{
 		int currentMax = 0;
 		for(int i=0; i<content.size(); i++) {
 			if(content.get(i).contains(";")) {
-			String[] nameScore = content.get(i).split(";");
-			String name = nameScore[0];
-			int score = Integer.valueOf(nameScore[1]);
-			if(score > currentMax) {
-				winner = name;
-				currentMax = score;
-			}
+				String[] nameScore = content.get(i).split(";");
+				String name = nameScore[0];
+				try {
+					int score = Integer.valueOf(nameScore[1]);
+					if(score > currentMax) {
+						winner = name;
+						currentMax = score;
+					}
+				} catch(Exception e) {
+					System.out.println("File corrupted");
+					System.out.println(e);
+				}
 			}
 		}
 		return ("HIGHEST SCORE OF ALL TIME \nPlayer: " + winner + "\nScore: " + currentMax);

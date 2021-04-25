@@ -1,15 +1,12 @@
 package spaceInvaders;
 
 
-import javafx.scene.paint.Color;
-
 public class Shot {
 	
 	private double posx;
 	private double posy;
-	private Color shotColor = Color.BLACK;
 	private double radius = 5;
-	private int shotSpeed = 5;
+	private double shotSpeed = 5;
 	private Board board;
 	
 	public Shot(double posx, Board board) {
@@ -45,17 +42,13 @@ public class Shot {
 	public double getPosy() {
 		return posy;
 	}
-		
-	public Color getShotColor() {
-		return shotColor;
-	}
 	
 	public double getRadius() {
 		return radius;
 	}
 	
 	
-	public int getShotSpeed() {
+	public double getShotSpeed() {
 		return shotSpeed;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 public interface fileWrite {
 	public boolean writeNameToFile(String string);
 	
-	public void writeScoreToFile(String string);
+	public boolean writeScoreToFile(String string);
 	
 	public List<String> readFromFile();
 	

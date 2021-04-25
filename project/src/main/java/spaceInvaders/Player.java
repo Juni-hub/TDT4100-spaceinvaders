@@ -5,12 +5,20 @@ public class Player {
 	private int playerWidth = 50;
 	private double posx;
 	private int direction;
-	private int speed = 10;
+	private double speed = 10;
 	private String name;
 	private Board board;
 	//private double shotDelaySeconds = 0.4;
 	private int timeBeetweenShots = 12;
 	private int timeSinceLastShot;
+	
+	public int getTimeBeetweenShots() {
+		return timeBeetweenShots;
+	}
+	
+	public int getTimeSinceLastShot() {
+		return timeSinceLastShot;
+	}
 	
 	public Player(String name, Board board) {
 		this.name = name;
