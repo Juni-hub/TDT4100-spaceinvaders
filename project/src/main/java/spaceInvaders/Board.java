@@ -7,7 +7,15 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.FillRule;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -31,7 +39,7 @@ public class Board {
 		Saver saver = new Saver();
 		String name = saver.readFromFile().get(saver.readFromFile().size()-1);
 		Player player = new Player(name, this);
-		endGame = false;
+		this.endGame = false;
 	}
 	
 	public void gameLoop() {
@@ -180,5 +188,22 @@ public class Board {
 	
 	public List<Object> getObjectsToBeMoved() {
 		return objectsToBeMoved;
+	}
+	
+	public Arc drawArc(double centerX, double centerY, double radius, double length) {
+		Arc arc = new Arc();
+		arc.setFill(Color.RED);
+		arc.setCenterX(centerX);
+		arc.setCenterY(centerY);
+		arc.setRadiusX(radius);
+		arc.setRadiusY(radius);
+		arc.setStartAngle(90);
+		arc.setLength(length);
+		arc.setType(ArcType.ROUND);
+		return arc;
+	}
+	
+	public void updateArc(Arc arc, double length) {
+		arc.setLength(length);
 	}
 }

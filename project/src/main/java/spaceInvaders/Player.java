@@ -10,7 +10,7 @@ public class Player {
 	private int speed = 10;
 	private String name;
 	private Board board;
-	private double shotDelaySeconds = 0.3;
+	private double shotDelaySeconds = 0.4;
 	
 	public Player(String name, Board board) {
 		this.setName(name);
@@ -28,7 +28,7 @@ public class Player {
 			this.posx = -(board.getBoardWidth() - playerWidth) / 2;
 		} else if(this.posx > ((board.getBoardWidth() - playerWidth) / 2)) {
 			this.posx = (board.getBoardWidth() - playerWidth) / 2;
-		}
+		}		
 	}
 		
 	public int getPosx() {
