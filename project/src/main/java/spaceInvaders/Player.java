@@ -1,48 +1,49 @@
 package spaceInvaders;
 
-import javafx.scene.shape.Circle;
-
 public class Player {
 	
 	private int playerWidth = 50;
-	private int posx = 0;
-	private int direction = 0;
+	private double posx;
+	private int direction;
 	private int speed = 10;
 	private String name;
 	private Board board;
-	private double shotDelaySeconds = 0.4;
+	//private double shotDelaySeconds = 0.4;
+	private int timeBeetweenShots = 12;
+	private int timeSinceLastShot;
 	
 	public Player(String name, Board board) {
-		this.setName(name);
+		this.name = name;
 		this.board = board;
-		this.board.setPlayer(this);
-	}
-	
-	public double getShotDelaySeconds() {
-		return shotDelaySeconds;
 	}
 	
 	public void move() {
 		this.posx += speed*direction;
-		if(this.posx < -((board. getBoardWidth() - playerWidth) / 2)) {
-			this.posx = -(board.getBoardWidth() - playerWidth) / 2;
-		} else if(this.posx > ((board.getBoardWidth() - playerWidth) / 2)) {
-			this.posx = (board.getBoardWidth() - playerWidth) / 2;
+		if(this.posx < -((board. getBoardWidth() - this.playerWidth) / 2)) {
+			this.posx = -(board.getBoardWidth() - this.playerWidth) / 2;
+		} else if(this.posx > ((board.getBoardWidth() - this.playerWidth) / 2)) {
+			this.posx = (board.getBoardWidth() - this.playerWidth) / 2;
 		}		
 	}
-		
-	public int getPosx() {
+	
+	public Shot shoot() {
+		if(timeSinceLastShot >= timeBeetweenShots) {
+			Shot shot = new Shot(this.posx,this.board);
+	    	board.getShotGroup().add(shot);
+	    	timeSinceLastShot = 0;
+	    	return shot;
+		}
+		return null;
+	}
+	
+
+	public double getPosx() {
 		return posx;
 	}
 
 	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	
 	public int getDirection() {
 		return direction;
@@ -56,16 +57,10 @@ public class Player {
 		return playerWidth;
 	}
 	
-	public Shot shoot() {
-		Circle c = new Circle();
-    	Shot shot = new Shot(posx, c,board);
-    	board.getShotGroup().add(shot);
-    	shot.getC().setCenterX(shot.getPosx());
-    	shot.getC().setCenterY(shot.getPosy());
-    	shot.getC().setRadius(shot.getShotRadius());
-    	shot.getC().setFill(shot.getShotColor());
-    	return shot;
+	public void addTimeSinceLastShot() {
+		this.timeSinceLastShot += 1;
 	}
+
 	
 }
 

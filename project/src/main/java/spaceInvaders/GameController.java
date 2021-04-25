@@ -2,17 +2,17 @@ package spaceInvaders;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import java.util.Hashtable;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -24,61 +24,54 @@ public class GameController{
 	private int cycleDuration = 1000 / targetFPS;
 	int frameCounter = 0;
 	private int secondsPerAlienRow = 2;
-	private int framesBetweenShots;
+	/*private int framesBetweenShots;
 	private int framesSinceLastShot;
-	private double framePercent;
+	private double framePercent;*/
 
 	@FXML
     private Pane pane;
 	@FXML
 	private Rectangle rectangle;
 	@FXML
-	private TextField score;
+	private TextArea score;
 	@FXML
 	private BorderPane borderPane;
 	
-	// Saver saver = new Saver();
-	// String name = saver.readFromFile().get(saver.readFromFile().size()-1);
 	private Board board = new Board();
-	// Player player = new Player(name, board);
+	private Hashtable<Alien, Circle> alienGroup= new Hashtable<Alien, Circle>();
+	private Hashtable<Shot, Circle> shotGroup= new Hashtable<Shot, Circle>();
 	
 	@FXML
 	public void startGame() {
+		if (!board.getStartGame()) {
+		board.setStartGame(true);
 		pane.requestFocus();
-		board.startGame();
 		
-		Arc shotTime = board.drawArc(25, 375, 20, 0);
-		
-		pane.getChildren().add(shotTime);
-		
-		framesBetweenShots = (int) Math.ceil(board.getPlayer().getShotDelaySeconds() * targetFPS);
-		framesSinceLastShot = framesBetweenShots;
-				
+		/*Arc shotTime = board.drawArc(25, 375, 20, 0);
+		pane.getChildren().add(shotTime);*/
+
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(cycleDuration), event -> {
 			frameCounter += 1;
-			framesSinceLastShot += 1;
+			
+			//framesSinceLastShot += 1;
+			
 			if(!board.getEndGame() == true) {
 				score.setText("Score: " + board.getScore());
+				
 				board.gameLoop();
-				checkObjectsToBeRemoved();
 				moveRectangle();
-				framePercent = ((double)framesSinceLastShot/framesBetweenShots);
-				board.updateArc(shotTime, Math.min(360.0, 360.0*framePercent));
+				moveShots();
+				checkObjectsToBeRemoved();
+				
+				/*framePercent = ((double)framesSinceLastShot/framesBetweenShots);
+				board.updateArc(shotTime, Math.min(360.0, 360.0*framePercent));*/
+				
 				if (frameCounter % (targetFPS * secondsPerAlienRow) == 0) {
 					board.alienGameLoop();
-					//addAliens();
-				}
-				for(Alien alien : board.getAlienGroup()) {
-					Circle c = new Circle();
-					c.setRadius(alien.getRadius());
-		            c.setFill(Color.GREEN);
-		            c.setCenterX(alien.getPosx());
-		            c.setCenterY(alien.getPosy());
+					moveAliens();
 				}
 			} else {
-				TextArea text = new TextArea("GAME OVER \nPlayer: " + board.getPlayer().getName() + "\nScore: " + board.getScore() + "\nHIGH SCORE\n" + board.getHighScoreString());
-				Font font = new Font("Segoe Script",20);
-				text.setFont(font);
+				TextArea text = new TextArea(board.getGameOverString());
 				text.setPrefHeight(200);
 				text.setPrefWidth(200);
 				text.setLayoutY(50);
@@ -89,6 +82,7 @@ public class GameController{
 		));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
+		}
 	}
 	
 	@FXML
@@ -111,10 +105,15 @@ public class GameController{
     		board.getPlayer().setDirection(1);
     	
     	} else if (event.getCode() == KeyCode.SPACE) {
-    		if(framesSinceLastShot >= framesBetweenShots) {
     			Shot shot = board.getPlayer().shoot();
-    			pane.getChildren().add(shot.getC());
-    			framesSinceLastShot = 0;
+    			if (shot != null) {
+    				Circle c = new Circle();
+    				c.setRadius(shot.getRadius());
+    				c.setFill(shot.getShotColor());
+    				c.setCenterX(shot.getPosx());
+    				c.setCenterY(shot.getPosy());
+    				shotGroup.put(shot, c);
+    				pane.getChildren().add(c);
     		}
 		}
 	}
@@ -132,19 +131,39 @@ public class GameController{
     
     public void checkObjectsToBeRemoved() {
     	for(int i = 0; i < board.getObjectsToBeRemoved().size(); i++) {
+    			Object removeNode;
     			Object o = board.getObjectsToBeRemoved().get(i);
-    			pane.getChildren().remove(o);
-    			// System.out.println("REMOVED");
+    			if (alienGroup.containsKey(o)) {
+    				removeNode = alienGroup.get(o);
+    			} else {
+    				removeNode = shotGroup.get(o);
+    			}
+    			pane.getChildren().remove(removeNode);
     		}
     	}
     
-    /*public void addAliens() {
-    	for (int i = 0; i < board.getAlienGroup().size();i++) {
-    		Alien alien = board.getAlienGroup().get(i);
-    		if(!pane.getChildren().contains(alien.getC())) {
-    			pane.getChildren().add(alien.getC());
+    public void moveAliens() {
+    	for(Alien alien : board.getAlienGroup()) {
+    		if (alienGroup.containsKey(alien)) {
+    			alienGroup.get(alien).setCenterX(alien.getPosx());
+    			alienGroup.get(alien).setCenterY(alien.getPosy());
+    		} else {
+    			Circle c = new Circle();
+    			c.setRadius(alien.getRadius());
+                c.setFill(alien.getAlienColor());
+                c.setCenterX(alien.getPosx());
+                c.setCenterY(alien.getPosy());
+                pane.getChildren().add(c);
+                alienGroup.put(alien,c);
     		}
     	}
-    }*/
-}
+    }
+    
+    public void moveShots() {
+    	for(Shot shot : board.getShotGroup()) {
+    		shotGroup.get(shot).setCenterY(shot.getPosy());
+    		}
+    	}
+    }
+    
 

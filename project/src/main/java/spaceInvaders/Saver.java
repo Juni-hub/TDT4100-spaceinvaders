@@ -14,10 +14,30 @@ public class Saver implements fileWrite{
 	private String path = rootPath + "/src/main/java/spaceInvaders/gameScore";
 	
 	@Override
-	public void writeToFile(String string) {
+	public boolean writeNameToFile(String string) {
+		for (int i = 0; i < string.length();i++) {
+			if (Character.isLetter(string.charAt(i)) == false && string.charAt(i) != ' ' && string.charAt(i) != '\n') {
+				System.out.println("Ugyldig navn");
+				return false;
+			}
+		}
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
 			writer.write(string);
-			System.out.println("Wrote: " + string);
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("An IO-exception occured");
+			System.out.println(e);
+		} catch(Exception e) {
+			System.out.println("An unknown error occured!");
+			System.out.println(e);
+		} return true;
+		
+	}
+	
+	@Override
+	public void writeScoreToFile(String string) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+			writer.write(string);
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
@@ -28,14 +48,15 @@ public class Saver implements fileWrite{
 		}
 		
 	}
+	
 	@Override
 	public List<String> readFromFile() {
 		List<String> content = new ArrayList<String>();
 		try (Scanner scanner = new Scanner (new FileReader(path))) {
 			while (scanner.hasNextLine()) {
 				content.add(scanner.nextLine());
-			return content;
 			}
+			return content;
 		} catch (IOException e) {
 			System.out.println("An IO-exception occured");
 			System.out.println(e);
@@ -51,6 +72,7 @@ public class Saver implements fileWrite{
 		String winner = "";
 		int currentMax = 0;
 		for(int i=0; i<content.size(); i++) {
+			if(content.get(i).contains(";")) {
 			String[] nameScore = content.get(i).split(";");
 			String name = nameScore[0];
 			int score = Integer.valueOf(nameScore[1]);
@@ -58,7 +80,8 @@ public class Saver implements fileWrite{
 				winner = name;
 				currentMax = score;
 			}
+			}
 		}
-		return ("Player: " + winner + "\nScore: " + currentMax);
+		return ("HIGHEST SCORE OF ALL TIME \nPlayer: " + winner + "\nScore: " + currentMax);
 	}
 }
